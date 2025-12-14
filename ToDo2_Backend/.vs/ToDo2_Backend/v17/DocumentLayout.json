@@ -1,66 +1,66 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\",
+  "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\taskcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\taskcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\enums\\recurrencetypeenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\enums\\recurrencetypeenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\taskupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\taskupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\taskcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\taskcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\taskresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\taskresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\controllers\\listcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\controllers\\listcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\listresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\listresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\listupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\listupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\listcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\listcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\listcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\controllers\\stepcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\controllers\\stepcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\stepresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\taskupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\taskupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\taskresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\taskresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\listupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\listupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\stepresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\stepresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\stepupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\controllers\\listcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\controllers\\listcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\controllers\\stepcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\controllers\\stepcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\stepupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\stepupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\asus\\desktop\\todo2\\todo2_backend\\todo2_backend\\dtos\\stepcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\stepcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\stepcreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\listresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\listresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|c:\\users\\user\\desktop\\todo2\\todo2\\todo2_backend\\todo2_backend\\dtos\\enums\\recurrencetypeenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{084E4B0B-2400-4C75-9195-78F23091E07C}|ToDo2_Backend\\ToDo2_Backend.csproj|solutionrelative:todo2_backend\\dtos\\enums\\recurrencetypeenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -70,127 +70,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 372,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "TaskCreateDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskCreateDto.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\TaskCreateDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskCreateDto.cs",
-              "RelativeToolTip": "ToDo2_Backend\\DTOs\\TaskCreateDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T08:00:53.52Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Program.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\Program.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Program.cs",
-              "RelativeToolTip": "ToDo2_Backend\\Program.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAAwwJAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T07:57:55.977Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "RecurrenceTypeEnum.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\Enums\\RecurrenceTypeEnum.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\Enums\\RecurrenceTypeEnum.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\Enums\\RecurrenceTypeEnum.cs",
-              "RelativeToolTip": "ToDo2_Backend\\DTOs\\Enums\\RecurrenceTypeEnum.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-13T11:11:32.614Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "TaskUpdateDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskUpdateDto.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\TaskUpdateDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskUpdateDto.cs",
-              "RelativeToolTip": "ToDo2_Backend\\DTOs\\TaskUpdateDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T08:01:12.947Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\appsettings.json",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\appsettings.json",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\appsettings.json",
-              "RelativeToolTip": "ToDo2_Backend\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-12T11:24:27.019Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\UserController.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\Controllers\\UserController.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\UserController.cs",
-              "RelativeToolTip": "ToDo2_Backend\\Controllers\\UserController.cs",
-              "ViewState": "AgIAAHYAAAAAAAAAAAAYwHkAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T08:18:28.202Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "TaskResponseDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskResponseDto.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\TaskResponseDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskResponseDto.cs",
-              "RelativeToolTip": "ToDo2_Backend\\DTOs\\TaskResponseDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T08:01:33.493Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "ListController.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\ListController.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\Controllers\\ListController.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\ListController.cs",
-              "RelativeToolTip": "ToDo2_Backend\\Controllers\\ListController.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAYwFMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T08:00:28.259Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ListResponseDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListResponseDto.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\ListResponseDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListResponseDto.cs",
-              "RelativeToolTip": "ToDo2_Backend\\DTOs\\ListResponseDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T08:00:10.071Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
               "Title": "ListUpdateDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListUpdateDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListUpdateDto.cs",
               "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\ListUpdateDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListUpdateDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListUpdateDto.cs",
               "RelativeToolTip": "ToDo2_Backend\\DTOs\\ListUpdateDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -198,35 +86,23 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ListCreateDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListCreateDto.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\ListCreateDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListCreateDto.cs",
-              "RelativeToolTip": "ToDo2_Backend\\DTOs\\ListCreateDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T07:59:31.19Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "StepController.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\StepController.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\Controllers\\StepController.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\StepController.cs",
-              "RelativeToolTip": "ToDo2_Backend\\Controllers\\StepController.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAYwGUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T07:57:17.145Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 12,
+              "Title": "StepCreateDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepCreateDto.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\StepCreateDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepCreateDto.cs",
+              "RelativeToolTip": "ToDo2_Backend\\DTOs\\StepCreateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T07:56:06.281Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "StepResponseDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepResponseDto.cs",
               "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\StepResponseDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepResponseDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepResponseDto.cs",
               "RelativeToolTip": "ToDo2_Backend\\DTOs\\StepResponseDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -234,11 +110,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 11,
               "Title": "StepUpdateDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepUpdateDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepUpdateDto.cs",
               "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\StepUpdateDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepUpdateDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepUpdateDto.cs",
               "RelativeToolTip": "ToDo2_Backend\\DTOs\\StepUpdateDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -246,15 +122,137 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "StepCreateDto.cs",
-              "DocumentMoniker": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepCreateDto.cs",
-              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\StepCreateDto.cs",
-              "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\StepCreateDto.cs",
-              "RelativeToolTip": "ToDo2_Backend\\DTOs\\StepCreateDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "TaskCreateDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskCreateDto.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\TaskCreateDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskCreateDto.cs",
+              "RelativeToolTip": "ToDo2_Backend\\DTOs\\TaskCreateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T07:56:06.281Z"
+              "WhenOpened": "2025-12-12T08:00:53.52Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TaskUpdateDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskUpdateDto.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\TaskUpdateDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskUpdateDto.cs",
+              "RelativeToolTip": "ToDo2_Backend\\DTOs\\TaskUpdateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T08:01:12.947Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "StepController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\StepController.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\Controllers\\StepController.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\StepController.cs",
+              "RelativeToolTip": "ToDo2_Backend\\Controllers\\StepController.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAUwGMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T07:57:17.145Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\UserController.cs",
+              "RelativeToolTip": "ToDo2_Backend\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJUAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T08:18:28.202Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ListResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListResponseDto.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\ListResponseDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListResponseDto.cs",
+              "RelativeToolTip": "ToDo2_Backend\\DTOs\\ListResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T08:00:10.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ListCreateDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListCreateDto.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\ListCreateDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\ListCreateDto.cs",
+              "RelativeToolTip": "ToDo2_Backend\\DTOs\\ListCreateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T07:59:31.19Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\appsettings.json",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\appsettings.json",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\appsettings.json",
+              "RelativeToolTip": "ToDo2_Backend\\appsettings.json",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-12T11:24:27.019Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ListController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\ListController.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\Controllers\\ListController.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\ListController.cs",
+              "RelativeToolTip": "ToDo2_Backend\\Controllers\\ListController.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAzwEkAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T08:00:28.259Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Program.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\Program.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Program.cs",
+              "RelativeToolTip": "ToDo2_Backend\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAH0AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T07:57:55.977Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TaskResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskResponseDto.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\TaskResponseDto.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\TaskResponseDto.cs",
+              "RelativeToolTip": "ToDo2_Backend\\DTOs\\TaskResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T08:01:33.493Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "RecurrenceTypeEnum.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\Enums\\RecurrenceTypeEnum.cs",
+              "RelativeDocumentMoniker": "ToDo2_Backend\\DTOs\\Enums\\RecurrenceTypeEnum.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\ToDo2\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\DTOs\\Enums\\RecurrenceTypeEnum.cs",
+              "RelativeToolTip": "ToDo2_Backend\\DTOs\\Enums\\RecurrenceTypeEnum.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-13T11:11:32.614Z"
             }
           ]
         }
