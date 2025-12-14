@@ -1,0 +1,164 @@
+* {
+  box-sizing: border-box;
+}
+
+.todo-root {
+  display: flex;
+  height: 100vh;
+  font-family: system-ui, -apple-system;
+  color: white;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: #1b1b1b;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background: teal;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mail {
+  font-size: 13px;
+  color: #ccc;
+}
+
+.search {
+  background: #2a2a2a;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.nav {
+  padding: 8px;
+  border-radius: 6px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.nav.active {
+  background: #2f2f2f;
+  color: #4cc2ff;
+}
+
+.new-list {
+  margin-top: auto;
+  padding: 8px;
+  color: #4cc2ff;
+  cursor: pointer;
+}
+
+/* ORTA ALAN */
+.daily {
+  flex: 1;
+  background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e");
+  background-size: cover;
+  background-position: center;
+  padding: 32px;
+  position: relative;
+}
+
+.daily-header h1 {
+  font-size: 32px;
+}
+
+.daily-header span {
+  color: #ddd;
+}
+
+.focus-card {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(30,30,30,0.85);
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.focus-card button {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: #2f2f2f;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-task-bar {
+  position: absolute;
+  bottom: 24px;
+  left: 32px;
+  right: 32px;
+  background: rgba(0,0,0,0.6);
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+}
+
+.add-task-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: white;
+  outline: none;
+}
+
+/* SAĞ PANEL */
+.detail {
+  width: 300px;
+  background: #1b1b1b;
+  padding: 16px;
+}
+
+.detail-task {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.circle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #aaa;
+  border-radius: 50%;
+}
+
+.detail-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 14px;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 12px;
+  background: #2a2a2a;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  color: white;
+}
