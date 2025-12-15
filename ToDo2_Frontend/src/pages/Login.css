@@ -4,84 +4,89 @@ html, body, #root {
   margin: 0;
 }
 
+/* MOR / UZAY ARKA PLAN */
 .login-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(
-    circle at center,
-    #2a2a2a 0%,
-    #1a1a1a 60%,
-    #111 100%
-  );
+
+  background:
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+    url("https://images.unsplash.com/photo-1519681393784-d120267933ba");
+
+  background-size: cover;
+  background-position: center;
 }
 
-
-
-
+/* CAM EFEKTLİ KART */
 .login-card {
-  background: #1b1b1b;
   width: 360px;
   padding: 30px 25px;
-  border-radius: 16px;
-  box-shadow:
-    0 25px 60px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 1px rgba(255,255,255,0.04);
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.18);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-    margin-left: auto;
-  margin-right: auto;
+transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+}
+
+.login-card.fade {
+  transform: scale(0.97);
 }
 
 .login-owl {
-  width: 110px;
-  margin-bottom: 12px;
-    margin-top: -6px;
+  width: 100px;
+  margin-bottom: 10px;
 }
 
 .login-card h2 {
-  color: #ffffff;
-  margin-bottom: 20px;
+  color: #fff;
+  margin-bottom: 18px;
 }
 
 .login-card input {
   width: 100%;
   padding: 12px;
   margin-bottom: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
   outline: none;
-  background: #2a2a2a;
+
+  background: rgba(0,0,0,0.35);
   color: white;
 }
 
 .login-card input::placeholder {
-  color: #aaa;
+  color: #ddd;
 }
 
 .login-card button {
   width: 100%;
   padding: 12px;
   margin-top: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
+
   background: #4cc2ff;
-  color: black;
+  color: #000;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.login-card button:hover {
-  background: #3bb0ea;
-}
 .register-text {
-  margin-top: 22px;
+  margin-top: 20px;
   font-size: 13px;
-  color: #888;
+  color: #ddd;
 }
 
 .register-text span {
@@ -90,6 +95,35 @@ html, body, #root {
   font-weight: 600;
 }
 
-.register-text span:hover {
-  text-decoration: underline;
+.login-card.flip {
+  transform: rotateY(180deg);
+}
+/* 3D FLIP ALT YAPI */
+.login-container {
+  perspective: 1200px;
+}
+
+/* kart zaten var, sadece şunları EKLE */
+.login-card {
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease;
+}
+
+/* kayıt ol durumunda kart döner */
+.login-card.flip {
+  transform: rotateY(180deg);
+}
+
+/* içeriklerin aynalanmasını engeller */
+.card-face {
+  backface-visibility: hidden;
+  width: 100%;
+}
+
+/* arka yüz (register) */
+.card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateY(180deg);
 }
