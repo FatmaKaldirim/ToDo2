@@ -1,4 +1,5 @@
 import "./TodoLayout.css";
+import { NavLink, Outlet } from "react-router-dom";
 
 function TodoLayout() {
   return (
@@ -14,41 +15,40 @@ function TodoLayout() {
         <input className="search" placeholder="Ara" />
 
         <nav>
-          <div className="nav active">Günüm</div>
-          <div className="nav">Önemli</div>
-          <div className="nav">Planlanan</div>
-          <div className="nav">Görevler</div>
-          <div className="nav">Başlarken</div>
+          <NavLink to="/todo/gunum" className={({isActive}) => isActive ? "nav active" : "nav"}>
+            Günüm
+          </NavLink>
+
+          <NavLink to="/todo/onemli" className={({isActive}) => isActive ? "nav active" : "nav"}>
+            Önemli
+          </NavLink>
+
+          <NavLink to="/todo/planlanan" className={({isActive}) => isActive ? "nav active" : "nav"}>
+            Planlanan
+          </NavLink>
+
+          <NavLink to="/todo/gorevler" className={({isActive}) => isActive ? "nav active" : "nav"}>
+            Görevler
+          </NavLink>
+
+          <NavLink to="/todo/baslarken" className={({isActive}) => isActive ? "nav active" : "nav"}>
+            👋 Başlarken
+          </NavLink>
         </nav>
 
         <div className="new-list">+ Yeni liste</div>
       </aside>
 
-      {/* ORTA ANA EKRAN */}
+      {/* ORTA ALAN */}
       <main className="daily">
-        <div className="daily-header">
-          <h1>Günüm</h1>
-          <span>15 Aralık Pazartesi</span>
-        </div>
-
-        <div className="focus-card">
-          <div className="focus-icon">📅</div>
-          <h3>Gününüzde odaklanın</h3>
-          <p>Her gün yenilenen Günüm listesiyle<br />işlerinizi tamamlayın.</p>
-          <button>Görevi Günüm görünümüne ekle</button>
-        </div>
-
-        <div className="add-task-bar">
-          <span className="circle"></span>
-          <input placeholder="Görev ekle" />
-        </div>
+        <Outlet />
       </main>
 
-      {/* SAĞ DETAY PANEL */}
+      {/* SAĞ PANEL */}
       <aside className="detail">
         <div className="detail-task">
           <span className="circle"></span>
-          <span>günlük,yıllık tablosu</span>
+          <span>günlük, yıllık tablosu</span>
         </div>
 
         <div className="detail-item">+ Adım ekle</div>
