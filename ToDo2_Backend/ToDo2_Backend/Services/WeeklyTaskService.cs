@@ -1,5 +1,7 @@
 ﻿using ToDo2_Backend.DTOs;
 using ToDo2_Backend.Services.Interfaces;
+using System.Data.SqlClient;
+using Dapper;
 
 public class WeeklyTaskService : IWeeklyTaskService
 {

@@ -1,5 +1,8 @@
 ﻿using ToDo2_Backend.DTOs;
 using ToDo2_Backend.Services.Interfaces;
+using System.Data.SqlClient;
+using Dapper;
+using System.Data;
 
 public class MonthlyTaskService : IMonthlyTaskService
 {
@@ -14,8 +17,12 @@ public class MonthlyTaskService : IMonthlyTaskService
     {
         await _connection.ExecuteAsync(
             "todo.sp_AddMonthlyTask",
-            new { TaskId = taskId, MonthDate = monthDate },
-            commandType: System.Data.CommandType.StoredProcedure
+            new
+            {
+                TaskId = taskId,
+                MonthDate = monthDate
+            },
+            commandType: CommandType.StoredProcedure
         );
     }
 
@@ -23,8 +30,24 @@ public class MonthlyTaskService : IMonthlyTaskService
     {
         return await _connection.QueryAsync<MonthlyTaskDto>(
             "todo.sp_GetMonthlyTasks",
-            new { UserId = userId },
-            commandType: System.Data.CommandType.StoredProcedure
+            new
+            {
+                UserId = userId
+            },
+            commandType: CommandType.StoredProcedure
+        );
+    }
+
+    // 🔴 EKSİK OLAN METOT (HATAYI ÇÖZEN KISIM)
+    public async Task RemoveMonthlyTask(int monthlyTaskId)
+    {
+        await _connection.ExecuteAsync(
+            "todo.sp_RemoveMonthlyTask",
+            new
+            {
+                MonthlyTaskId = monthlyTaskId
+            },
+            commandType: CommandType.StoredProcedure
         );
     }
 }
