@@ -180,3 +180,4 @@ C:\Users\User\Desktop\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\r
 C:\Users\User\Desktop\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ToDo2_Backend.pdb
 C:\Users\User\Desktop\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ToDo2_Backend.genruntimeconfig.cache
 C:\Users\User\Desktop\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ref\ToDo2_Backend.dll
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ToDo2_Backend.sourcelink.json

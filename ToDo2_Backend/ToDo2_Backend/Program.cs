@@ -4,35 +4,29 @@ using Microsoft.OpenApi.Models;
 using System.Data.SqlClient;
 using System.Text;
 using System.Text.Json.Serialization;
+using ToDo2_Backend.Repositories;
+using ToDo2_Backend.Repositories.Interfaces;
+using ToDo2_Backend.Services;
+using ToDo2_Backend.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// =======================
-// CONTROLLERS + JSON (ENUM STRING)
-// =======================
+// Controllers + JSON
 builder.Services
     .AddControllers()
     .AddJsonOptions(opt =>
     {
-        opt.JsonSerializerOptions.Converters.Add(
-            new JsonStringEnumConverter()
-        );
+        opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 builder.Services.AddEndpointsApiExplorer();
 
-// =======================
-// SQL CONNECTION (Dapper)
-// =======================
+// SQL Connection (Dapper)
 builder.Services.AddTransient<SqlConnection>(sp =>
-    new SqlConnection(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
+    new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// =======================
-// CORS (Frontend)
-// =======================
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -45,14 +39,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-// =======================
-// JWT AUTHENTICATION
-// =======================
+// JWT
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrWhiteSpace(jwtKey))
-{
     throw new Exception("Jwt:Key appsettings.json içinde tanımlı değil!");
-}
 
 var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
 
@@ -81,16 +71,10 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-// =======================
-// SWAGGER + JWT
-// =======================
+// Swagger + JWT
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "ToDoList API",
-        Version = "v1"
-    });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList API", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -119,13 +103,23 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // =======================
-// BUILD APP
+// DI: Repositories
 // =======================
-var app = builder.Build();
+builder.Services.AddScoped<IWeeklyTaskRepository, WeeklyTaskRepository>();
+builder.Services.AddScoped<IMonthlyTaskRepository, MonthlyTaskRepository>();
+builder.Services.AddScoped<IPlanRepository, PlanRepository>();
 
 // =======================
-// MIDDLEWARE PIPELINE
+// DI: Services
 // =======================
+builder.Services.AddScoped<IWeeklyTaskService, WeeklyTaskService>();
+builder.Services.AddScoped<IMonthlyTaskService, MonthlyTaskService>();
+builder.Services.AddScoped<IPlanService, PlanService>();
+
+// BUILD
+var app = builder.Build();
+
+// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -133,11 +127,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors();
 
-app.UseAuthentication(); // 🔴 ÖNCE
-app.UseAuthorization();  // 🔴 SONRA
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
