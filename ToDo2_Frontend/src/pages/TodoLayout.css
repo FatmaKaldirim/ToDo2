@@ -49,15 +49,17 @@
 }
 
 .nav {
-  padding: 8px;
-  border-radius: 6px;
-  color: #ccc;
+  display: block;          /* YAN YANA OLMASIN */
+  padding: 10px 14px;
+  border-radius: 8px;
   cursor: pointer;
+  color: #ddd;
+  text-decoration: none;   /* NavLink alt çizgiyi kaldırır */
 }
 
 .nav.active {
-  background: #2f2f2f;
-  color: #4cc2ff;
+  background: rgba(0, 120, 212, 0.25);
+  color: #fff;
 }
 
 .new-list {
@@ -162,3 +164,61 @@ textarea {
   padding: 8px;
   color: white;
 }
+.nav:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.sidebar nav {
+  display: flex;
+  flex-direction: column; /* ALT ALTA */
+  gap: 6px;
+}
+/* Başlarken listesi */
+.start-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Görev çubuğu */
+.start-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #2b2b2b;        /* KOYU GRİ (ŞEFFAF DEĞİL) */
+  padding: 12px 14px;
+  border-radius: 8px;
+
+  border: 1px solid #3a3a3a;  /* Hafif kenarlık */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+
+  transition: background 0.2s ease;
+}
+/* Hover efekti */
+.start-item:hover {
+  background: #333333;
+}
+
+/* Sol daire */
+.start-item .circle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+}
+
+/* YAZI → BEYAZ */
+.start-item .text {
+  flex: 1;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+/* Yıldız */
+.start-item .star {
+  color: #ccc;
+  cursor: pointer;
+}
+
+
