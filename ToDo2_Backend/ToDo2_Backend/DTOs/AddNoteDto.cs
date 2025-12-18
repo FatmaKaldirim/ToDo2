@@ -1,9 +1,8 @@
-﻿namespace ToDo2_Backend.DTOs
+﻿namespace ToDo2_Backend.Dtos
 {
     public class AddNoteDto
     {
-        public int UserID { get; set; }
-        public int? TaskID { get; set; }  // İsteğe bağlı
+        public int? TaskID { get; set; }
         public string NoteText { get; set; } = string.Empty;
     }
 }

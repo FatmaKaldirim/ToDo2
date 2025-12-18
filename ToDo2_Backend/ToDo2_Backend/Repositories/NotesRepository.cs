@@ -1,6 +1,7 @@
 ﻿using Dapper;
+using System.Data;
 using System.Data.SqlClient;
-using ToDo2_Backend.DTOs;
+using ToDo2_Backend.Dtos;
 using ToDo2_Backend.Models;
 
 namespace ToDo2_Backend.Repositories
@@ -14,38 +15,30 @@ namespace ToDo2_Backend.Repositories
             _connection = connection;
         }
 
-        // 1) NOT EKLE
-        public async Task AddNoteAsync(AddNoteDto dto)
+        public async Task AddNoteAsync(int userId, AddNoteDto dto)
         {
             await _connection.ExecuteAsync(
                 "todo.sp_AddNote",
-                new
-                {
-                    UserID = dto.UserID,
-                    TaskID = dto.TaskID,
-                    NoteText = dto.NoteText
-                },
-                commandType: System.Data.CommandType.StoredProcedure
+                new { UserID = userId, TaskID = dto.TaskID, NoteText = dto.NoteText },
+                commandType: CommandType.StoredProcedure
             );
         }
 
-        // 2) KULLANICIYA AİT NOTLARI GETİR
-        public async Task<IEnumerable<NoteModel>> GetNotesByUser(int userId)
+        public async Task<IEnumerable<NoteModel>> GetMyNotesAsync(int userId)
         {
             return await _connection.QueryAsync<NoteModel>(
                 "todo.sp_GetNotesByUser",
                 new { UserID = userId },
-                commandType: System.Data.CommandType.StoredProcedure
+                commandType: CommandType.StoredProcedure
             );
         }
 
-        // 3) TASK'A AİT NOTLARI GETİR
-        public async Task<IEnumerable<NoteModel>> GetNotesByTask(int taskId)
+        public async Task<IEnumerable<NoteModel>> GetMyNotesByTaskAsync(int userId, int taskId)
         {
             return await _connection.QueryAsync<NoteModel>(
                 "todo.sp_GetNotesByTask",
-                new { TaskID = taskId },
-                commandType: System.Data.CommandType.StoredProcedure
+                new { UserID = userId, TaskID = taskId },
+                commandType: CommandType.StoredProcedure
             );
         }
     }

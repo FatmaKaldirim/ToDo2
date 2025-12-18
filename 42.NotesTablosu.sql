@@ -1,0 +1,14 @@
+USE ToDo2Db;
+GO
+
+IF OBJECT_ID('todo.Notes', 'U') IS NULL
+BEGIN
+    CREATE TABLE todo.Notes (
+        NoteID INT IDENTITY(1,1) PRIMARY KEY,
+        UserID INT NOT NULL,
+        TaskID INT NULL,
+        NoteText NVARCHAR(1000) NOT NULL,
+        CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+    );
+END
+GO
