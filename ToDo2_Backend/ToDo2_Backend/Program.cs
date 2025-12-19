@@ -18,6 +18,7 @@ builder.Services
     {
         opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+
 builder.Services.AddEndpointsApiExplorer();
 #endregion
 
@@ -26,33 +27,25 @@ builder.Services.AddScoped<SqlConnection>(_ =>
     new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 #endregion
 
-#region CORS
+#region CORS (DEV)
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("DevCors", policy =>
     {
         policy
-            .WithOrigins("http://localhost:3000", "https://localhost:3000")
+            .AllowAnyOrigin()
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowAnyMethod();
     });
 });
 #endregion
 
 #region JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"];
-if (string.IsNullOrWhiteSpace(jwtKey))
-    throw new Exception("Jwt:Key appsettings.json içinde tanımlı değil!");
-
-var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
+var keyBytes = Encoding.UTF8.GetBytes(jwtKey!);
 
 builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -80,6 +73,7 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 
+    // 🔐 JWT AUTH
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -107,14 +101,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 #endregion
 
-#region DI - Repositories
+#region DI
 builder.Services.AddScoped<IWeeklyTaskRepository, WeeklyTaskRepository>();
 builder.Services.AddScoped<IMonthlyTaskRepository, MonthlyTaskRepository>();
 builder.Services.AddScoped<IPlanRepository, PlanRepository>();
-builder.Services.AddScoped<NotesRepository>(); // Notes userId token’dan alacak
-#endregion
+builder.Services.AddScoped<NotesRepository>();
 
-#region DI - Services
 builder.Services.AddScoped<IWeeklyTaskService, WeeklyTaskService>();
 builder.Services.AddScoped<IMonthlyTaskService, MonthlyTaskService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
@@ -130,9 +122,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors();
+
+app.UseRouting();
+
+app.UseCors("DevCors");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 #endregion
 

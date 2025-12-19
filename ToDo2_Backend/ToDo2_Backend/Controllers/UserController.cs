@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Data.SqlClient;
@@ -27,6 +28,7 @@ namespace ToDo2_Backend.Controllers
         // =========================
         // REGISTER
         // =========================
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
@@ -68,6 +70,7 @@ namespace ToDo2_Backend.Controllers
             return Ok(new
             {
                 message = "Kayıt başarılı",
+                userId = newUserId,
                 token
             });
         }
@@ -75,6 +78,7 @@ namespace ToDo2_Backend.Controllers
         // =========================
         // LOGIN
         // =========================
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
@@ -94,6 +98,7 @@ namespace ToDo2_Backend.Controllers
             return Ok(new
             {
                 message = "Giriş başarılı",
+                userId = user.UserID,
                 token
             });
         }
@@ -139,16 +144,17 @@ namespace ToDo2_Backend.Controllers
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwt["Key"]!)
+            );
 
-            var expires = DateTime.UtcNow.AddHours(24);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: jwt["Issuer"],
                 audience: jwt["Audience"],
                 claims: claims,
-                expires: expires,
+                expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: creds
             );
 
