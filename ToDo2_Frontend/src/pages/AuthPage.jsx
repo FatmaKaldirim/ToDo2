@@ -42,8 +42,7 @@ function AuthPage() {
         navigate("/"); // Navigate to home page after login
       }
     } catch (err) {
-      console.error(err);
-      // Provide a more user-friendly error
+      console.log('Error object:', err);
       const errorMessage = err.response?.data || "Bir hata oluştu. Lütfen tekrar deneyin.";
       alert(errorMessage);
     } finally {
@@ -62,8 +61,8 @@ function AuthPage() {
   return (
     <main className="auth-container">
       <section className="auth-card">
-        <header className="logo-text">ZENITH</header>
-        <h2>{isRegister ? "Join Us" : "Welcome Back"}</h2>
+        <header className="logo-text">To Do List</header>
+        <h2>{isRegister ? "Hesap Oluştur" : "Hoş Geldiniz"}</h2>
 
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {isRegister && (

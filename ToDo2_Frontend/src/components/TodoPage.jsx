@@ -92,8 +92,7 @@ export default function TodoPage({ title, pageType, listId }) {
   }, [selectedTask, loadSteps, loadNotes]);
 
   const addTask = async (e) => {
-    if (e && e.type === 'keydown' && e.key !== "Enter") return;
-        e.preventDefault();
+    e.preventDefault();
     if (!newTask.trim()) return;
     const listToAdd = listId ? parseInt(listId) : selectedListId;
     if (!listToAdd) {
@@ -204,12 +203,12 @@ export default function TodoPage({ title, pageType, listId }) {
             {lists.map(list => (<option key={list.listID} value={list.listID}>{list.listName}</option>))}
           </select>
         )}
+        <span style={{ fontSize: '20px', color: '#9ca3af', marginRight: '8px' }}>○</span>
         <input 
-          placeholder="Add a task" 
+          placeholder="Görev ekle" 
           value={newTask} 
           onChange={(e) => setNewTask(e.target.value)} 
         />
-        <button className="add-task-btn" type="submit">Add</button>
       </form>
       
       <aside className={`task-detail ${selectedTask ? "open" : ""}`}>

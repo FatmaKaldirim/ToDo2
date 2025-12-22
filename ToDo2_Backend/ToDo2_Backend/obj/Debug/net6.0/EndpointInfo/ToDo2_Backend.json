@@ -81,6 +81,18 @@
         }
       }
     },
+    "/api/HealthCheck": {
+      "get": {
+        "tags": [
+          "HealthCheck"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Lists/add": {
       "post": {
         "tags": [

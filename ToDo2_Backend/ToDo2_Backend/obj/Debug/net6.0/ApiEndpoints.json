@@ -53,6 +53,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ToDo2_Backend.Controllers.HealthCheckController",
+    "Method": "Check",
+    "RelativePath": "api/HealthCheck",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ToDoList_Odev_Backend.Controllers.ListsController",
     "Method": "AddList",
     "RelativePath": "api/Lists/add",
