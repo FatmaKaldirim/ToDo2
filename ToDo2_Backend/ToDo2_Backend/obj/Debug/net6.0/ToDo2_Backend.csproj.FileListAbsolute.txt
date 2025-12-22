@@ -81,7 +81,6 @@ C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\staticw
 C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.ToDo2_Backend.props
 C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.ToDo2_Backend.props
 C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\staticwebassets.pack.json
-C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
 C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ToDo2_Ba.FCBBD252.Up2Date
 C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ToDo2_Backend.dll
 C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\refint\ToDo2_Backend.dll
@@ -269,3 +268,4 @@ C:\Users\User\OneDrive\Masaüstü\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\De
 C:\Users\User\OneDrive\Masaüstü\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ToDo2_Backend.pdb
 C:\Users\User\OneDrive\Masaüstü\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ToDo2_Backend.genruntimeconfig.cache
 C:\Users\User\OneDrive\Masaüstü\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ref\ToDo2_Backend.dll
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt

@@ -21,7 +21,7 @@ main.auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 2rem; /* Use rem for scalable padding */
   background: 
     linear-gradient(
       170deg, 
@@ -59,16 +59,19 @@ main.auth-container::before {
   to { transform: rotate(360deg); }
 }
 
+/* --- REDESIGNED AUTH CARD --- */
+
 section.auth-card {
-  width: 100%;
-  max-width: 420px;
-  padding: 40px;
-  background: rgba(25, 15, 5, 0.15); /* Highly transparent dark base */
+  width: 60vw; /* Takes up 60% of the viewport width */
+  max-width: 700px; /* Max width to avoid looking bad on very large screens */
+  min-width: 380px; /* Min width for mobile */
+  padding: 3.5rem; /* Increased padding */
+  background: rgba(25, 15, 5, 0.2); /* Slightly more opaque for better readability */
   backdrop-filter: blur(25px) saturate(120%);
   -webkit-backdrop-filter: blur(25px) saturate(120%);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: 32px; /* Softer, larger radius */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25); /* Deeper shadow */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,74 +81,76 @@ section.auth-card {
 }
 
 header.logo-text {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 48px; /* Significantly larger font size */
+  font-weight: 700; /* Bolder */
   color: var(--text-primary);
-  letter-spacing: 5px;
+  letter-spacing: 8px;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 1.5rem; /* Increased margin */
   text-shadow: 
-    0 0 10px var(--glow-color),
-    0 0 20px var(--glow-color),
-    0 0 35px var(--glow-color);
+    0 0 12px var(--glow-color),
+    0 0 25px var(--glow-color),
+    0 0 45px var(--glow-color);
 }
 
 section.auth-card h2 {
   color: var(--text-secondary);
-  margin-bottom: 24px;
-  font-weight: 400;
-  font-size: 18px;
-  letter-spacing: 0.5px;
+  margin-bottom: 2.5rem; /* Increased margin */
+  font-weight: 500; /* Medium weight */
+  font-size: 28px; /* Larger font size */
+  letter-spacing: 1px;
 }
 
 section.auth-card .input-group {
   width: 100%;
-  margin-bottom: 18px;
+  margin-bottom: 1.5rem; /* Increased spacing */
   position: relative;
 }
 
 section.auth-card input {
   width: 100%;
-  padding: 14px 20px;
-  border-radius: 12px;
+  padding: 20px 25px; /* Thicker input fields */
+  border-radius: 16px; /* Larger border radius */
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
   color: var(--text-primary);
-  font-size: 16px;
+  font-size: 20px; /* Larger font size */
   box-sizing: border-box;
   transition: all 0.3s ease;
   font-family: 'Poppins', sans-serif;
 }
 
 section.auth-card input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6); /* More visible placeholder */
 }
 
 section.auth-card input:focus {
   outline: none;
   border-color: rgba(255, 201, 167, 0.8);
-  box-shadow: 0 0 0 4px rgba(255, 201, 167, 0.2);
-  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 0 5px rgba(255, 201, 167, 0.25); /* Larger focus ring */
+  background: rgba(0, 0, 0, 0.3);
 }
 
 section.auth-card button {
   width: 100%;
-  padding: 14px;
-  margin-top: 16px;
-  border-radius: 12px;
+  padding: 20px; /* Thicker button */
+  margin-top: 2rem; /* More space above button */
+  border-radius: 16px; /* Matching input fields */
   border: none;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95); /* Brighter button */
   color: #c05d2f;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 700; /* Bolder text */
+  font-size: 20px; /* Larger font size */
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: 'Poppins', sans-serif;
+  text-transform: uppercase; /* For emphasis */
+  letter-spacing: 1px;
 }
 
 section.auth-card button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
   background: rgba(255, 255, 255, 1);
 }
 
@@ -161,10 +166,10 @@ section.auth-card button:disabled {
 }
 
 p.switch-text {
-  margin-top: 24px;
-  font-size: 14px;
+  margin-top: 2rem; /* More space */
+  font-size: 16px; /* Larger font size */
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 p.switch-text span {
@@ -176,6 +181,6 @@ p.switch-text span {
 }
 
 p.switch-text span:hover {
-  text-shadow: 0 0 8px var(--link-color);
+  text-shadow: 0 0 10px var(--link-color);
   opacity: 0.9;
 }
