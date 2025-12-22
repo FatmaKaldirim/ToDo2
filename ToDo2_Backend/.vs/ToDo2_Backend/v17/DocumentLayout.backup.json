@@ -202,8 +202,7 @@
               "RelativeToolTip": "ToDo2_Backend\\DTOs\\WeeklyTaskDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-16T09:02:44.906Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-16T09:02:44.906Z"
             },
             {
               "$type": "Document",
@@ -215,8 +214,7 @@
               "RelativeToolTip": "ToDo2_Backend\\Services\\PlanService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-16T11:22:06.381Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-16T11:22:06.381Z"
             },
             {
               "$type": "Document",
@@ -228,8 +226,7 @@
               "RelativeToolTip": "ToDo2_Backend\\Services\\WeeklyTaskService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-16T11:19:04.764Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-16T11:19:04.764Z"
             },
             {
               "$type": "Document",
@@ -241,8 +238,7 @@
               "RelativeToolTip": "ToDo2_Backend\\Services\\Interfaces\\IMonthlyTaskService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-16T11:20:17.708Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-16T11:20:17.708Z"
             },
             {
               "$type": "Document",
@@ -254,8 +250,7 @@
               "RelativeToolTip": "ToDo2_Backend\\Services\\Interfaces\\IDailyTaskService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-16T09:06:02.271Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-16T09:06:02.271Z"
             },
             {
               "$type": "Document",
@@ -265,7 +260,7 @@
               "RelativeDocumentMoniker": "ToDo2_Backend\\Controllers\\UserController.cs",
               "ToolTip": "C:\\Users\\Asus\\Desktop\\ToDo2\\ToDo2_Backend\\ToDo2_Backend\\Controllers\\UserController.cs",
               "RelativeToolTip": "ToDo2_Backend\\Controllers\\UserController.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF8AAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-12T08:18:28.202Z",
               "EditorCaption": ""
@@ -280,8 +275,7 @@
               "RelativeToolTip": "ToDo2_Backend\\Controllers\\NotesController.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAiwCoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-16T14:34:53.73Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-16T14:34:53.73Z"
             },
             {
               "$type": "Document",
