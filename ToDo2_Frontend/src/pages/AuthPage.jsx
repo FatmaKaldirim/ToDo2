@@ -62,8 +62,8 @@ function AuthPage() {
   return (
     <main className="auth-container">
       <section className="auth-card">
-        <header className="logo-text">To Do</header>
-        <h2>{isRegister ? "Hesap Oluştur" : "Hoş Geldiniz"}</h2>
+        <header className="logo-text">ZENITH</header>
+        <h2>{isRegister ? "Join Us" : "Welcome Back"}</h2>
 
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {isRegister && (

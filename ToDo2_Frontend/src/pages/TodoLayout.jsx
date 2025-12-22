@@ -12,6 +12,7 @@ function TodoLayout() {
   const { user } = useAuth();
   const [lists, setLists] = useState([]);
   const { searchTerm, setSearchTerm } = useSearch();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const fetchLists = useCallback(async () => {
     try {
@@ -28,11 +29,12 @@ function TodoLayout() {
     }
   }, [user, fetchLists]);
 
-  // Clear search when navigating away from a search-enabled page
   useEffect(() => {
     if (!location.pathname.startsWith('/search')) {
       setSearchTerm('');
     }
+    // Close sidebar on navigation
+    setSidebarOpen(false);
   }, [location, setSearchTerm]);
 
   const handleLogout = () => {
@@ -84,16 +86,16 @@ function TodoLayout() {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    // If user types, navigate to a general tasks page to show results
     if (location.pathname !== '/gorevler') {
         navigate('/gorevler');
     }
   };
 
-
   return (
     <div className="todo-root">
-      <aside className="sidebar">
+      <button className="menu-btn" onClick={() => setSidebarOpen(!isSidebarOpen)}>☰</button>
+      <aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+        <div className="logo">ZENITH</div>
         {user && (
           <div className="profile">
             <div className="avatar">{user.name ? user.name.charAt(0).toUpperCase() : "U"}</div>
@@ -106,20 +108,20 @@ function TodoLayout() {
         )}
         <input 
           className="search" 
-          placeholder="Ara"
+          placeholder="Search..."
           value={searchTerm}
           onChange={handleSearchChange}
         />
         <nav>
-          <NavLink to="/gunum" className={({ isActive }) => (isActive ? "nav active" : "nav")}>Günüm</NavLink>
-          <NavLink to="/onemli" className={({ isActive }) => (isActive ? "nav active" : "nav")}>Önemli</NavLink>
-          <NavLink to="/planlanan" className={({ isActive }) => (isActive ? "nav active" : "nav")}>Planlanan</NavLink>
+          <NavLink to="/gunum" className="nav">My Day</NavLink>
+          <NavLink to="/onemli" className="nav">Important</NavLink>
+          <NavLink to="/planlanan" className="nav">Planned</NavLink>
         </nav>
         <hr className="divider" />
         <nav className="dynamic-lists">
           {lists.map(list => (
             <div key={list.listID} className="nav-item-container">
-              <NavLink to={`/lists/${list.listID}`} className={({ isActive }) => (isActive ? "nav active" : "nav")}>
+              <NavLink to={`/lists/${list.listID}`} className="nav">
                 {list.listName}
               </NavLink>
               <div className="nav-item-controls">
@@ -129,7 +131,7 @@ function TodoLayout() {
             </div>
           ))}
         </nav>
-        <div className="new-list" onClick={handleAddList}>+ Yeni liste</div>
+        <div className="new-list" onClick={handleAddList}>+ New List</div>
       </aside>
       <main className="daily">
         <Outlet />
@@ -139,5 +141,3 @@ function TodoLayout() {
 }
 
 export default TodoLayout;
-
-
