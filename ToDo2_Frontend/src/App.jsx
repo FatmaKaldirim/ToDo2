@@ -9,15 +9,40 @@ import Planlanan from "./pages/Planlanan";
 import Gorevler from "./pages/Gorevler";
 import Baslarken from "./pages/Baslarken";
 
+// 🔐 Auth kontrol componenti
+const RequireAuth = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/login" replace />;
+};
+
+// 🔁 Login guard
+const RedirectIfAuth = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return token ? <Navigate to="/todo" replace /> : children;
+};
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route
+          path="/login"
+          element={
+            <RedirectIfAuth>
+              <Login />
+            </RedirectIfAuth>
+          }
+        />
 
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/todo" element={<TodoLayout />}>
-          <Route index element={<Navigate to="gunum" />} />
+        <Route
+          path="/todo"
+          element={
+            <RequireAuth>
+              <TodoLayout />
+            </RequireAuth>
+          }
+        >
+          <Route index element={<Navigate to="gunum" replace />} />
           <Route path="gunum" element={<Gunum />} />
           <Route path="onemli" element={<Onemli />} />
           <Route path="planlanan" element={<Planlanan />} />
@@ -25,11 +50,10 @@ function App() {
           <Route path="baslarken" element={<Baslarken />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/login" />} />
-
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-export default App;
+export default App;         

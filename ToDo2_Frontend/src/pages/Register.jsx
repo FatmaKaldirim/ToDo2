@@ -26,7 +26,9 @@ function Register() {
 
         <div className="switch-text">
           Zaten hesabın var mı?{" "}
-          <span onClick={() => navigate("/login")}>Giriş yap</span>
+          <span onClick={() => navigate("/login")}>
+            Giriş yap
+          </span>
         </div>
       </div>
     </div>

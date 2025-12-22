@@ -1,0 +1,243 @@
+/* ===== ORTA ALAN ===== */
+.todo-layout{
+  position:relative;
+  height:100%;
+  color:#fff;
+}
+
+.page-title{
+  font-size:34px;
+  font-weight:600;
+  margin-bottom:16px;
+}
+
+.todo-list{
+  padding:32px;
+  padding-bottom:120px;
+}
+
+.task-ul{ list-style:none; padding:0; margin:0; }
+
+.task-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  border-radius:10px;
+  background:rgba(0,0,0,.45);
+  backdrop-filter: blur(6px);
+  cursor:pointer;
+  transition: background .15s ease;
+}
+
+.task-row:hover{
+  background:rgba(0,0,0,.6);
+}
+
+.task-row.done{
+  opacity:.55;
+}
+
+.task-name{
+  flex:1;
+  font-size:15px;
+}
+
+.check-circle{
+  width:18px;
+  height:18px;
+  border:2px solid #ddd;
+  border-radius:50%;
+}
+
+.check-circle.filled{
+  background:#ddd;
+}
+
+.star-toggle{
+  font-size:18px;
+  cursor:pointer;
+}
+
+.completed-title{
+  margin-top:24px;
+  opacity:.7;
+}
+
+/* ===== ALT GÖREV EKLE ===== */
+.add-task-bar{
+  position:absolute;
+  left:32px;
+  right:32px;
+  bottom:24px;
+  display:flex;
+  gap:12px;
+  padding:16px;
+  border-radius:12px;
+  background:rgba(0,0,0,.55);
+  backdrop-filter: blur(12px);
+}
+
+.add-task-bar input{
+  flex:1;
+  background:transparent;
+  border:none;
+  color:#fff;
+  font-size:16px;
+  outline:none;
+}
+
+/* ===== SAĞ PANEL ===== */
+.task-detail{
+  position:absolute;
+  top:0;
+  right:0;
+  width:340px;
+  height:100%;
+  padding:16px;
+  background:#1f1f1f;
+  transform:translateX(110%);
+  transition:transform .25s ease;
+  z-index:50;
+}
+
+.task-detail.open{ transform:translateX(0); }
+
+.close-btn{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:32px;
+  height:32px;
+  border-radius:8px;
+  border:none;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  cursor:pointer;
+}
+
+/* ===== SAĞ PANEL KARTLARI ===== */
+.detail-card{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px;
+  margin-bottom:10px;
+  border-radius:10px;
+  background:#2a2a2a;
+}
+
+.header-card{
+  font-weight:500;
+}
+
+.detail-title{
+  flex:1;
+}
+
+.detail-card.action:hover{
+  background:#333;
+  cursor:pointer;
+}
+
+.detail-card.muted{
+  opacity:.65;
+}
+
+.detail-card.subtle{
+  color:#aaa;
+}
+
+/* ===== NOT ===== */
+.detail-note{
+  width:100%;
+  min-height:90px;
+  margin-top:8px;
+  background:#2a2a2a;
+  border:none;
+  border-radius:8px;
+  padding:10px;
+  color:#fff;
+  resize:none;
+}
+
+/* ===== ADIMLAR ===== */
+.steps{ margin-top:12px; }
+.step-row{
+  display:flex;
+  gap:8px;
+  margin-bottom:6px;
+}
+.step-row .done{
+  text-decoration:line-through;
+  opacity:.6;
+}
+.step-input{
+  width:100%;
+  background:transparent;
+  border:none;
+  color:#fff;
+  padding:6px 2px;
+}
+
+/* ===== ALT ===== */
+.detail-footer{
+  margin-top:12px;
+  font-size:12px;
+  opacity:.6;
+}
+
+.delete-btn{
+  margin-top:12px;
+  width:100%;
+  padding:10px;
+  background:#ff5c5c;
+  border:none;
+  border-radius:8px;
+  color:#fff;
+  cursor:pointer;
+}
+.task-ul { list-style:none; padding:0; margin:0; }
+
+.task-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  border-radius:10px;
+  background:rgba(0,0,0,.45);
+  cursor:pointer;
+}
+
+.task-row.done{
+  opacity:.5;
+  text-decoration: line-through;
+}
+
+.task-name{
+  flex:1;
+  pointer-events:none; /* 🔥 SATIR TIKLAMASI İÇİN */
+}
+
+.check-btn{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:2px solid #ddd;
+  background:transparent;
+  cursor:pointer;
+}
+
+.check-btn.filled{
+  background:#ddd;
+}
+
+.star-btn{
+  background:none;
+  border:none;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}

@@ -11,7 +11,7 @@ using ToDo2_Backend.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Controllers + JSON
+#region Controllers + JSON
 builder.Services
     .AddControllers()
     .AddJsonOptions(opt =>
@@ -20,38 +20,32 @@ builder.Services
     });
 
 builder.Services.AddEndpointsApiExplorer();
+#endregion
 
-// SQL Connection (Dapper)
-builder.Services.AddTransient<SqlConnection>(sp =>
-    new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+#region SQL Connection (Dapper)
+builder.Services.AddScoped<SqlConnection>(_ =>
+    new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+#endregion
 
-// CORS
+#region CORS (DEV)
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("DevCors", policy =>
     {
         policy
-            .WithOrigins("http://localhost:3000", "https://localhost:3000")
+            .AllowAnyOrigin()
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowAnyMethod();
     });
 });
+#endregion
 
-// JWT
+#region JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"];
-if (string.IsNullOrWhiteSpace(jwtKey))
-    throw new Exception("Jwt:Key appsettings.json içinde tanımlı değil!");
-
-var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
+var keyBytes = Encoding.UTF8.GetBytes(jwtKey!);
 
 builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -60,22 +54,26 @@ builder.Services
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
-
             ClockSkew = TimeSpan.Zero
         };
     });
 
 builder.Services.AddAuthorization();
+#endregion
 
-// Swagger + JWT
+#region Swagger + JWT
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "ToDoList API",
+        Version = "v1"
+    });
 
+    // 🔐 JWT AUTH
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -101,25 +99,22 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+#endregion
 
-// =======================
-// DI: Repositories
-// =======================
+#region DI
 builder.Services.AddScoped<IWeeklyTaskRepository, WeeklyTaskRepository>();
 builder.Services.AddScoped<IMonthlyTaskRepository, MonthlyTaskRepository>();
 builder.Services.AddScoped<IPlanRepository, PlanRepository>();
+builder.Services.AddScoped<NotesRepository>();
 
-// =======================
-// DI: Services
-// =======================
 builder.Services.AddScoped<IWeeklyTaskService, WeeklyTaskService>();
 builder.Services.AddScoped<IMonthlyTaskService, MonthlyTaskService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
+#endregion
 
-// BUILD
 var app = builder.Build();
 
-// Middleware
+#region Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -127,11 +122,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors();
+
+app.UseRouting();
+
+app.UseCors("DevCors");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+#endregion
 
 app.Run();

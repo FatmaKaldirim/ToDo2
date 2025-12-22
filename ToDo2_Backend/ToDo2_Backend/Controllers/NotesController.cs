@@ -1,42 +1,45 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ToDo2_Backend.DTOs;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using ToDo2_Backend.Dtos;
 using ToDo2_Backend.Repositories;
 
 namespace ToDo2_Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class NotesController : ControllerBase
     {
-        private readonly NotesRepository _notesRepo;
+        private readonly NotesRepository _repo;
 
-        public NotesController(NotesRepository notesRepo)
+        public NotesController(NotesRepository repo)
         {
-            _notesRepo = notesRepo;
+            _repo = repo;
         }
 
-        // 1) NOT EKLE
+        private int GetUserId()
+        {
+            return int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        }
+
         [HttpPost("add")]
-        public async Task<IActionResult> AddNote(AddNoteDto dto)
+        public async Task<IActionResult> Add(AddNoteDto dto)
         {
-            await _notesRepo.AddNoteAsync(dto);
-            return Ok("Not eklendi.");
+            await _repo.AddNoteAsync(GetUserId(), dto);
+            return Ok("Not eklendi");
         }
 
-        // 2) KULLANICIYA AİT NOTLAR
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetNotesByUser(int userId)
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMyNotes()
         {
-            var notes = await _notesRepo.GetNotesByUser(userId);
-            return Ok(notes);
+            return Ok(await _repo.GetMyNotesAsync(GetUserId()));
         }
 
-        // 3) TASK'A AİT NOTLAR
-        [HttpGet("task/{taskId}")]
-        public async Task<IActionResult> GetNotesByTask(int taskId)
+        [HttpGet("me/task/{taskId}")]
+        public async Task<IActionResult> GetMyNotesByTask(int taskId)
         {
-            var notes = await _notesRepo.GetNotesByTask(taskId);
-            return Ok(notes);
+            return Ok(await _repo.GetMyNotesByTaskAsync(GetUserId(), taskId));
         }
     }
 }
