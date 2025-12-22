@@ -50,7 +50,7 @@ namespace ToDoList_Odev_Backend.Controllers
         }
 
         // ==========================
-        // GET TASKS
+        // GET ALL TASKS FOR USER
         // ==========================
         [HttpGet("list")]
         public async Task<IActionResult> GetTasks()
@@ -65,6 +65,41 @@ namespace ToDoList_Odev_Backend.Controllers
 
             return Ok(tasks);
         }
+
+        // ==========================
+        // GET TASKS BY LIST
+        // ==========================
+        [HttpGet("list/{listId}")]
+        public async Task<IActionResult> GetTasksByList(int listId)
+        {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var tasks = await _connection.QueryAsync<TaskResponseDto>(
+                "todo.sp_GetTasksByList",
+                new { UserID = userId, ListID = listId },
+                commandType: CommandType.StoredProcedure
+            );
+
+            return Ok(tasks);
+        }
+
+        // ==========================
+        // SEARCH TASKS
+        // ==========================
+        [HttpGet("search/{keyword}")]
+        public async Task<IActionResult> SearchTasks(string keyword)
+        {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var tasks = await _connection.QueryAsync<TaskResponseDto>(
+                "todo.sp_SearchTasks",
+                new { UserID = userId, Keyword = keyword },
+                commandType: CommandType.StoredProcedure
+            );
+
+            return Ok(tasks);
+        }
+
 
         // ==========================
         // UPDATE TASK

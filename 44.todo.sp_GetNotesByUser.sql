@@ -1,3 +1,6 @@
+use ToDo2Db
+go 
+
 CREATE OR ALTER PROCEDURE todo.sp_GetNotesByUser
     @UserID INT
 AS

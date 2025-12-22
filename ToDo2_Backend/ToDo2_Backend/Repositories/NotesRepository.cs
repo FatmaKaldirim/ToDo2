@@ -41,5 +41,24 @@ namespace ToDo2_Backend.Repositories
                 commandType: CommandType.StoredProcedure
             );
         }
+
+        public async Task UpdateNoteAsync(int userId, NoteModel note)
+        {
+            await _connection.ExecuteAsync(
+                "todo.sp_UpdateNote",
+                new { UserID = userId, NoteID = note.NoteID, NoteText = note.NoteText },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task DeleteNoteAsync(int userId, int noteId)
+        {
+            // Note: todo.sp_DeleteNote should be altered to accept UserID for security.
+            await _connection.ExecuteAsync(
+                "todo.sp_DeleteNote",
+                new { UserID = userId, NoteID = noteId }, 
+                commandType: CommandType.StoredProcedure
+            );
+        }
     }
 }

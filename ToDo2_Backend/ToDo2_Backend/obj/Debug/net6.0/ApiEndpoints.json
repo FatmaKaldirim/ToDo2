@@ -112,7 +112,7 @@
   },
   {
     "ContainingType": "ToDo2_Backend.Controllers.NotesController",
-    "Method": "AddNote",
+    "Method": "Add",
     "RelativePath": "api/Notes/add",
     "HttpMethod": "POST",
     "IsController": true,
@@ -120,7 +120,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "ToDo2_Backend.DTOs.AddNoteDto",
+        "Type": "ToDo2_Backend.Dtos.AddNoteDto",
         "IsRequired": true
       }
     ],
@@ -128,8 +128,34 @@
   },
   {
     "ContainingType": "ToDo2_Backend.Controllers.NotesController",
-    "Method": "GetNotesByTask",
-    "RelativePath": "api/Notes/task/{taskId}",
+    "Method": "Delete",
+    "RelativePath": "api/Notes/delete/{noteId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "noteId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ToDo2_Backend.Controllers.NotesController",
+    "Method": "GetMyNotes",
+    "RelativePath": "api/Notes/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ToDo2_Backend.Controllers.NotesController",
+    "Method": "GetMyNotesByTask",
+    "RelativePath": "api/Notes/me/task/{taskId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -144,15 +170,15 @@
   },
   {
     "ContainingType": "ToDo2_Backend.Controllers.NotesController",
-    "Method": "GetNotesByUser",
-    "RelativePath": "api/Notes/user/{userId}",
-    "HttpMethod": "GET",
+    "Method": "Update",
+    "RelativePath": "api/Notes/update",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
-        "Type": "System.Int32",
+        "Name": "note",
+        "Type": "ToDo2_Backend.Models.NoteModel",
         "IsRequired": true
       }
     ],
@@ -278,6 +304,38 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ToDoList_Odev_Backend.Controllers.TasksController",
+    "Method": "GetTasksByList",
+    "RelativePath": "api/Tasks/list/{listId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "listId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ToDoList_Odev_Backend.Controllers.TasksController",
+    "Method": "SearchTasks",
+    "RelativePath": "api/Tasks/search/{keyword}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "keyword",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

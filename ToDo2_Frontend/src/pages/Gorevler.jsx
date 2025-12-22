@@ -1,19 +1,10 @@
 import TodoPage from "../components/TodoPage";
 
 export default function Gorevler() {
+  // This page will show all tasks without any filtering
   return (
     <TodoPage
-      title="Görevler"
-      subtitle="Tüm görevleriniz"
-      icon="📋"
-      cardTitle="Tüm işlerinizi yönetin"
-      cardText={
-        <>
-          Oluşturduğunuz tüm görevler<br />
-          burada listelenir.
-        </>
-      }
-      inputPlaceholder="Görev ekle"
+      title="Tüm Görevler"
     />
   );
 }

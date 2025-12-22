@@ -1,6 +1,10 @@
+use ToDo2Db
+go 
+
 CREATE OR ALTER PROCEDURE todo.sp_DeleteNote
 (
-    @NoteID INT
+    @NoteID INT,
+    @UserID INT
 )
 AS
 BEGIN
@@ -10,7 +14,7 @@ BEGIN
         BEGIN TRAN;
 
         DELETE FROM todo.Notes
-        WHERE NoteID = @NoteID;
+        WHERE NoteID = @NoteID AND UserID = @UserID;
 
         COMMIT;
     END TRY

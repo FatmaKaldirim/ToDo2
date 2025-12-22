@@ -2,8 +2,25 @@
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  background-color: #0f0f0f;
-  color: #f5f5f5;
+
+  /* New Light & Pastel Color Palette */
+  --background-primary: #f8f9fa; /* Very light grey */
+  --background-secondary: #ffffff; /* White */
+  --background-tertiary: #e9ecef; /* Lighter grey for elements */
+  
+  --text-primary: #212529; /* Dark grey for text */
+  --text-secondary: #6c757d; /* Lighter grey for secondary text */
+  
+  --accent-primary: #667eea; /* Pastel purple-blue */
+  --accent-primary-transparent: rgba(102, 126, 234, 0.15);
+  --accent-secondary: #764ba2; /* Pastel purple */
+
+  --border-color: #dee2e6;
+  --shadow-color: rgba(0, 0, 0, 0.05);
+
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -11,6 +28,8 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
@@ -21,9 +40,7 @@ body,
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
-  background: #0f0f0f;
 }
 
 a {
@@ -33,4 +50,5 @@ a {
 
 button {
   font-family: inherit;
+  cursor: pointer;
 }

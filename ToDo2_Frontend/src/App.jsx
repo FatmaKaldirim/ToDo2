@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { SearchProvider } from "./context/SearchContext.jsx";
 
-import Login from "./pages/Login";
+import AuthPage from "./pages/AuthPage";
 import TodoLayout from "./pages/TodoLayout";
 
 import Gunum from "./pages/Gunum";
@@ -8,6 +9,7 @@ import Onemli from "./pages/Onemli";
 import Planlanan from "./pages/Planlanan";
 import Gorevler from "./pages/Gorevler";
 import Baslarken from "./pages/Baslarken";
+import ListPage from "./pages/ListPage";
 
 // 🔐 Auth kontrol componenti
 const RequireAuth = ({ children }) => {
@@ -18,42 +20,46 @@ const RequireAuth = ({ children }) => {
 // 🔁 Login guard
 const RedirectIfAuth = ({ children }) => {
   const token = localStorage.getItem("token");
-  return token ? <Navigate to="/todo" replace /> : children;
+  return token ? <Navigate to="/" replace /> : children;
 };
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <RedirectIfAuth>
-              <Login />
-            </RedirectIfAuth>
-          }
-        />
+      <SearchProvider>
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <RedirectIfAuth>
+                <AuthPage />
+              </RedirectIfAuth>
+            }
+          />
 
-        <Route
-          path="/todo"
-          element={
-            <RequireAuth>
-              <TodoLayout />
-            </RequireAuth>
-          }
-        >
-          <Route index element={<Navigate to="gunum" replace />} />
-          <Route path="gunum" element={<Gunum />} />
-          <Route path="onemli" element={<Onemli />} />
-          <Route path="planlanan" element={<Planlanan />} />
-          <Route path="gorevler" element={<Gorevler />} />
-          <Route path="baslarken" element={<Baslarken />} />
-        </Route>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <TodoLayout />
+              </RequireAuth>
+            }
+          >
+            <Route index element={<Navigate to="gunum" replace />} />
+            <Route path="gunum" element={<Gunum />} />
+            <Route path="onemli" element={<Onemli />} />
+            <Route path="planlanan" element={<Planlanan />} />
+            <Route path="gorevler" element={<Gorevler />} />
+            <Route path="baslarken" element={<Baslarken />} />
+            <Route path="lists/:listId" element={<ListPage />} />
+          </Route>
 
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+          {/* Redirect any other path to the main page */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </SearchProvider>
     </BrowserRouter>
   );
 }
 
-export default App;         
+export default App;

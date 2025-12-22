@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -32,30 +33,27 @@ namespace ToDo2_Backend.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            var existingUser = await _connection.QueryFirstOrDefaultAsync<User>(
-                "SELECT * FROM Users WHERE UserMail = @mail",
-                new { mail = dto.UserMail }
-            );
-
-            if (existingUser != null)
-                return BadRequest("Bu email zaten kayıtlı.");
-
             CreatePasswordHash(dto.UserPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
-            var insertSql = @"
-                INSERT INTO Users (UserName, UserMail, PasswordHash, PasswordSalt)
-                VALUES (@UserName, @UserMail, @PasswordHash, @PasswordSalt);
-                SELECT CAST(SCOPE_IDENTITY() AS INT);
-            ";
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserName", dto.UserName);
+            parameters.Add("@UserMail", dto.UserMail);
+            parameters.Add("@PasswordHash", passwordHash);
+            parameters.Add("@PasswordSalt", passwordSalt);
 
-            int newUserId = await _connection.ExecuteScalarAsync<int>(insertSql, new
+            int newUserId = await _connection.ExecuteScalarAsync<int>(
+                "sp_RegisterUser",
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            if (newUserId == -1)
             {
-                dto.UserName,
-                dto.UserMail,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt
-            });
-
+                return BadRequest("Bu email zaten kayıtlı.");
+            }
+            
+            // Stored procedure'dan dönen ID ile tam bir kullanıcı nesnesi oluşturalım.
+            // Bu, token oluşturma için gereklidir.
             var user = new User
             {
                 UserID = newUserId,
@@ -83,8 +81,9 @@ namespace ToDo2_Backend.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             var user = await _connection.QueryFirstOrDefaultAsync<User>(
-                "SELECT * FROM Users WHERE UserMail = @mail",
-                new { mail = dto.UserMail }
+                "sp_LoginUser",
+                new { UserMail = dto.UserMail },
+                commandType: CommandType.StoredProcedure
             );
 
             if (user == null)

@@ -209,14 +209,26 @@
         }
       }
     },
-    "/api/Notes/user/{userId}": {
+    "/api/Notes/me": {
+      "get": {
+        "tags": [
+          "Notes"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Notes/me/task/{taskId}": {
       "get": {
         "tags": [
           "Notes"
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "taskId",
             "in": "path",
             "required": true,
             "schema": {
@@ -232,14 +244,45 @@
         }
       }
     },
-    "/api/Notes/task/{taskId}": {
-      "get": {
+    "/api/Notes/update": {
+      "put": {
+        "tags": [
+          "Notes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Notes/delete/{noteId}": {
+      "delete": {
         "tags": [
           "Notes"
         ],
         "parameters": [
           {
-            "name": "taskId",
+            "name": "noteId",
             "in": "path",
             "required": true,
             "schema": {
@@ -421,6 +464,51 @@
       "get": {
         "tags": [
           "Tasks"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Tasks/list/{listId}": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Tasks/search/{keyword}": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -643,10 +731,6 @@
       "AddNoteDto": {
         "type": "object",
         "properties": {
-          "userID": {
-            "type": "integer",
-            "format": "int32"
-          },
           "taskID": {
             "type": "integer",
             "format": "int32",
@@ -693,6 +777,33 @@
           "userPassword": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NoteModel": {
+        "type": "object",
+        "properties": {
+          "noteID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "taskID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "noteText": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false

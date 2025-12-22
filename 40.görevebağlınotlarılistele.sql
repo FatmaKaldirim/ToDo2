@@ -1,3 +1,7 @@
+use ToDo2Db
+go 
+
+
 CREATE OR ALTER PROCEDURE todo.sp_GetNotesByTask
 (
     @TaskID INT
