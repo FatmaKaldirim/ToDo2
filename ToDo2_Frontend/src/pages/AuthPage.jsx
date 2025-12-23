@@ -2,6 +2,7 @@ import "./AuthPage.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { FiCheckSquare } from "react-icons/fi";
 
 function AuthPage() {
   const navigate = useNavigate();
@@ -61,8 +62,11 @@ function AuthPage() {
   return (
     <main className="auth-container">
       <section className="auth-card">
-        <header className="logo-text">To Do List</header>
-        <h2>{isRegister ? "Hesap Oluştur" : "Hoş Geldiniz"}</h2>
+        <div className="logo-icon-container">
+          <FiCheckSquare className="logo-icon" />
+          <h1 className="logo-text">To Do List</h1>
+        </div>
+        <h2>{isRegister ? "Kayıt Ol" : "Giriş Yap"}</h2>
 
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           {isRegister && (
@@ -98,7 +102,7 @@ function AuthPage() {
           </div>
 
           <button type="submit" disabled={loading}>
-            {loading ? "İşleniyor..." : isRegister ? "Kayıt Ol" : "Giriş Yap"}
+            {loading ? "İşleniyor..." : isRegister ? "KAYIT OL" : "GİRİŞ YAP"}
           </button>
         </form>
 
@@ -106,12 +110,12 @@ function AuthPage() {
           {isRegister ? (
             <>
               Zaten bir hesabınız var mı?{" "}
-              <span onClick={toggleAuthMode}>Giriş Yapın</span>
+              <span onClick={toggleAuthMode}>Giriş Yap</span>
             </>
           ) : (
             <>
               Hesabınız yok mu?{" "}
-              <span onClick={toggleAuthMode}>Hemen Kaydolun</span>
+              <span onClick={toggleAuthMode}>Kayıt Ol</span>
             </>
           )}
         </p>

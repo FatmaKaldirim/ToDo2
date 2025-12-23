@@ -121,6 +121,59 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ToDo2_Backend.Controllers.MonthlyTaskController",
+    "Method": "Add",
+    "RelativePath": "api/monthly-tasks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "taskId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "monthDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ToDo2_Backend.Controllers.MonthlyTaskController",
+    "Method": "Remove",
+    "RelativePath": "api/monthly-tasks/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ToDo2_Backend.Controllers.MonthlyTaskController",
+    "Method": "Get",
+    "RelativePath": "api/monthly-tasks/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ToDo2_Backend.Controllers.NotesController",
     "Method": "Add",
     "RelativePath": "api/Notes/add",
