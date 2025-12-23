@@ -292,6 +292,22 @@
   },
   {
     "ContainingType": "ToDoList_Odev_Backend.Controllers.TasksController",
+    "Method": "AddTaskWithPlan",
+    "RelativePath": "api/Tasks/add-with-plan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ToDo2_Backend.DTOs.AddTaskDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ToDoList_Odev_Backend.Controllers.TasksController",
     "Method": "DeleteTask",
     "RelativePath": "api/Tasks/delete/{taskId}",
     "HttpMethod": "DELETE",

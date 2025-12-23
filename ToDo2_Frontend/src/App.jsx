@@ -10,6 +10,11 @@ import Planlanan from "./pages/Planlanan";
 import Gorevler from "./pages/Gorevler";
 import Baslarken from "./pages/Baslarken";
 import ListPage from "./pages/ListPage";
+import Notlar from "./pages/Notlar";
+import Takvim from "./pages/Takvim";
+import Tamamlananlar from "./pages/Tamamlananlar";
+import NotDefteri from "./pages/NotDefteri";
+import Ayarlar from "./pages/Ayarlar";
 
 // 🔐 Auth kontrol componenti
 const RequireAuth = ({ children }) => {
@@ -51,6 +56,11 @@ function App() {
             <Route path="planlanan" element={<Planlanan />} />
             <Route path="gorevler" element={<Gorevler />} />
             <Route path="baslarken" element={<Baslarken />} />
+            <Route path="notlar" element={<Notlar />} />
+            <Route path="takvim" element={<Takvim />} />
+            <Route path="tamamlananlar" element={<Tamamlananlar />} />
+            <Route path="not-defteri" element={<NotDefteri />} />
+            <Route path="ayarlar" element={<Ayarlar />} />
             <Route path="lists/:listId" element={<ListPage />} />
           </Route>
 

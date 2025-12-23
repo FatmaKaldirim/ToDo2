@@ -4,6 +4,8 @@ import { useAuth } from "../utils/auth";
 import { useCallback, useEffect, useState } from "react";
 import api from "../api/axios";
 import { useSearch } from "../context/SearchContext.jsx";
+import { FiSearch, FiLogOut, FiCalendar, FiStar, FiClock, FiFileText, FiCheckCircle, FiBookOpen, FiSettings, FiMenu, FiX } from "react-icons/fi";
+import AddListModal from "../components/AddListModal";
 
 function TodoLayout() {
   const navigate = useNavigate();
@@ -12,6 +14,8 @@ function TodoLayout() {
   const { user } = useAuth();
   const [lists, setLists] = useState([]);
   const { searchTerm, setSearchTerm } = useSearch();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAddListModalOpen, setIsAddListModalOpen] = useState(false);
 
   const fetchLists = useCallback(async () => {
     try {
@@ -40,16 +44,18 @@ function TodoLayout() {
     navigate("/login");
   };
 
-  const handleAddList = async () => {
-    const listName = window.prompt("Yeni liste adı girin:");
-    if (listName) {
-      try {
-        await api.post('/Lists/add', { listName });
-        await fetchLists();
-      } catch (error) {
-        console.error("Failed to add list:", error);
-        alert("Liste eklenirken bir hata oluştu.");
-      }
+  const handleAddListClick = () => {
+    setIsAddListModalOpen(true);
+  };
+
+  const handleAddList = async (listName) => {
+    try {
+      await api.post('/Lists/add', { listName });
+      await fetchLists();
+      setIsAddListModalOpen(false);
+    } catch (error) {
+      console.error("Failed to add list:", error);
+      alert("Liste eklenirken bir hata oluştu.");
     }
   };
 
@@ -90,7 +96,17 @@ function TodoLayout() {
 
   return (
     <div className="todo-root">
-      <aside className="sidebar">
+      <button 
+        className="mobile-menu-toggle"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        aria-label="Menu"
+      >
+        {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+      </button>
+      {isMobileMenuOpen && (
+        <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
+      )}
+      <aside className={`sidebar ${isMobileMenuOpen ? "mobile-open" : ""}`}>
         {user && (
           <div className="profile">
             <div className="avatar">{user.name ? user.name.charAt(0).toUpperCase() : "U"}</div>
@@ -98,11 +114,21 @@ function TodoLayout() {
               <div className="name">{user.name}</div>
               <div className="mail">{user.email}</div>
             </div>
-            <button onClick={handleLogout} className="logout-btn" title="Çıkış Yap">⍈</button>
+            <button 
+              className="logout-btn" 
+              title="Çıkış Yap" 
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                handleLogout(); 
+                setIsMobileMenuOpen(false); 
+              }}
+            >
+              <FiLogOut />
+            </button>
           </div>
         )}
         <div style={{ position: 'relative', marginBottom: '16px' }}>
-          <span style={{ 
+          <FiSearch style={{ 
             position: 'absolute', 
             left: '12px', 
             top: '50%', 
@@ -111,7 +137,7 @@ function TodoLayout() {
             fontSize: '14px',
             zIndex: 1,
             pointerEvents: 'none'
-          }}>🔍</span>
+          }} />
           <input 
             className="search" 
             placeholder="Ara"
@@ -120,15 +146,82 @@ function TodoLayout() {
           />
         </div>
         <nav>
-          <NavLink to="/gunum" className={({ isActive }) => (isActive ? "nav active" : "nav")}>Günüm</NavLink>
-          <NavLink to="/onemli" className={({ isActive }) => (isActive ? "nav active" : "nav")}>Önemli</NavLink>
-          <NavLink to="/planlanan" className={({ isActive }) => (isActive ? "nav active" : "nav")}>Planlanan</NavLink>
+          <NavLink 
+            to="/gunum" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiClock style={{ marginRight: '8px', fontSize: '16px' }} />
+            Günüm
+          </NavLink>
+          <NavLink 
+            to="/onemli" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiStar style={{ marginRight: '8px', fontSize: '16px' }} />
+            Önemli
+          </NavLink>
+          <NavLink 
+            to="/planlanan" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiCalendar style={{ marginRight: '8px', fontSize: '16px' }} />
+            Planlanan
+          </NavLink>
+          <NavLink 
+            to="/notlar" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiFileText style={{ marginRight: '8px', fontSize: '16px' }} />
+            Notlar
+          </NavLink>
+          <NavLink 
+            to="/takvim" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiCalendar style={{ marginRight: '8px', fontSize: '16px' }} />
+            Takvim
+          </NavLink>
+          <NavLink 
+            to="/tamamlananlar" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiCheckCircle style={{ marginRight: '8px', fontSize: '16px' }} />
+            Tamamlananlar
+          </NavLink>
+          <NavLink 
+            to="/not-defteri" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiBookOpen style={{ marginRight: '8px', fontSize: '16px' }} />
+            Not Defteri
+          </NavLink>
+          <NavLink 
+            to="/ayarlar" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiSettings style={{ marginRight: '8px', fontSize: '16px' }} />
+            Ayarlar
+          </NavLink>
         </nav>
+        <hr className="divider" />
+        <div className="new-list" onClick={handleAddListClick}>+ Yeni liste</div>
         <hr className="divider" />
         <nav className="dynamic-lists">
           {lists.map(list => (
             <div key={list.listID} className="nav-item-container">
-              <NavLink to={`/lists/${list.listID}`} className={({ isActive }) => (isActive ? "nav active" : "nav")}>
+              <NavLink 
+                to={`/lists/${list.listID}`} 
+                className={({ isActive }) => (isActive ? "nav active" : "nav")}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 {list.listName}
               </NavLink>
               <div className="nav-item-controls">
@@ -138,11 +231,16 @@ function TodoLayout() {
             </div>
           ))}
         </nav>
-        <div className="new-list" onClick={handleAddList}>+ Yeni liste</div>
       </aside>
       <main className="daily">
         <Outlet />
       </main>
+      <AddListModal
+        isOpen={isAddListModalOpen}
+        onClose={() => setIsAddListModalOpen(false)}
+        onAdd={handleAddList}
+        existingLists={lists}
+      />
     </div>
   );
 }

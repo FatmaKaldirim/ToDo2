@@ -51,7 +51,7 @@ BEGIN
         END
         ELSE
         BEGIN
-            RAISERROR ('Geçersiz TaskType deðeri!', 16, 1);
+            RAISERROR ('Geï¿½ersiz TaskType deï¿½eri!', 16, 1);
         END
 
         COMMIT TRANSACTION;

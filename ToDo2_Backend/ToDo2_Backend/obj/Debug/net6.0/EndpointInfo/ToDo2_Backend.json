@@ -472,6 +472,37 @@
         }
       }
     },
+    "/api/Tasks/add-with-plan": {
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTaskDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTaskDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTaskDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Tasks/list": {
       "get": {
         "tags": [
@@ -755,6 +786,34 @@
         },
         "additionalProperties": false
       },
+      "AddTaskDto": {
+        "required": [
+          "listID",
+          "taskName",
+          "taskType",
+          "userID"
+        ],
+        "type": "object",
+        "properties": {
+          "userID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "listID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "taskName": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "taskType": {
+            "$ref": "#/components/schemas/TaskType"
+          }
+        },
+        "additionalProperties": false
+      },
       "ListCreateDto": {
         "type": "object",
         "properties": {
@@ -913,6 +972,14 @@
           }
         },
         "additionalProperties": false
+      },
+      "TaskType": {
+        "enum": [
+          "Daily",
+          "Weekly",
+          "Monthly"
+        ],
+        "type": "string"
       },
       "TaskUpdateDto": {
         "type": "object",
