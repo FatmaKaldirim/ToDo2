@@ -188,9 +188,9 @@ export default function TodoPage({ title, pageType, listId }) {
     if (e.key !== "Enter" || !newStepText.trim()) return;
     e.preventDefault(); // Form submit'i engelle
     try {
-      await api.post('/Step/add', { taskID: selectedTask.taskID, stepText: newStepText });
-      setNewStepText("");
-      loadSteps(selectedTask.taskID);
+    await api.post('/Step/add', { taskID: selectedTask.taskID, stepText: newStepText });
+    setNewStepText("");
+    loadSteps(selectedTask.taskID);
       // Adım eklendikten sonra bölümü açık tut
       setShowStepsSection(true);
     } catch (error) {
@@ -869,10 +869,16 @@ export default function TodoPage({ title, pageType, listId }) {
               </span>
               <button
                 className="delete-task-btn"
-                onClick={() => {
+                onClick={async () => {
                   if (window.confirm('Bu görevi silmek istediğinize emin misiniz?')) {
-                    // Delete task logic here
-                    setSelectedTask(null);
+                    try {
+                      await api.delete(`/Tasks/delete/${selectedTask.taskID}`);
+                      setSelectedTask(null);
+                      loadTasks();
+                    } catch (error) {
+                      console.error("Görev silinemedi:", error);
+                      alert("Görev silinirken bir hata oluştu.");
+                    }
                   }
                 }}
                 style={{ 

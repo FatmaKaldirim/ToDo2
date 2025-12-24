@@ -3,7 +3,7 @@ import { useAuth } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import "./Ayarlar.css";
-import { FiSettings, FiUser, FiMail, FiLogOut, FiTrash2, FiSave, FiSun, FiMoon, FiEye, FiEyeOff, FiBell, FiBellOff } from "react-icons/fi";
+import { FiSettings, FiUser, FiMail, FiLogOut, FiTrash2, FiSave, FiSun, FiMoon, FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function Ayarlar() {
   const { user } = useAuth();
@@ -17,7 +17,6 @@ export default function Ayarlar() {
   const [showCompletedTasks, setShowCompletedTasks] = useState(() => {
     return localStorage.getItem('showCompletedTasks') !== 'false';
   });
-  const [emailNotificationsEnabled, setEmailNotificationsEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
 
@@ -40,7 +39,6 @@ export default function Ayarlar() {
         const res = await api.get("/Users/me");
         setName(res.data.name || "");
         setEmail(res.data.email || "");
-        setEmailNotificationsEnabled(res.data.emailNotificationsEnabled ?? true);
       } catch (error) {
         console.error("Kullanıcı bilgileri yüklenemedi:", error);
       } finally {
@@ -53,25 +51,26 @@ export default function Ayarlar() {
     }
   }, [user]);
 
-  // Email bildirim ayarını güncelle
-  const handleEmailNotificationsToggle = async (enabled) => {
+  const handleSave = async () => {
+    if (!name.trim() || !email.trim()) {
+      alert("Lütfen ad ve email alanlarını doldurun.");
+      return;
+    }
+
     try {
       setLoading(true);
-      await api.put("/Users/email-notifications", {
-        emailNotificationsEnabled: enabled
+      await api.put("/Users/update-profile", {
+        name: name.trim(),
+        email: email.trim()
       });
-      setEmailNotificationsEnabled(enabled);
+      alert("Profil başarıyla güncellendi!");
     } catch (error) {
-      console.error("Email bildirim ayarı güncellenemedi:", error);
-      alert("Email bildirim ayarı güncellenirken bir hata oluştu.");
+      console.error("Profil güncellenemedi:", error);
+      const errorMessage = error.response?.data?.message || "Profil güncellenirken bir hata oluştu.";
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSave = () => {
-    // TODO: API call to update user profile
-    alert("Profil güncelleme özelliği yakında eklenecek.");
   };
 
   const handleLogout = () => {
@@ -79,10 +78,19 @@ export default function Ayarlar() {
     navigate("/login");
   };
 
-  const handleDeleteAccount = () => {
-    // TODO: API call to delete account
-    alert("Hesap silme özelliği yakında eklenecek.");
-    setShowDeleteConfirm(false);
+  const handleDeleteAccount = async () => {
+    try {
+      setLoading(true);
+      await api.delete("/Users/delete-account");
+      localStorage.removeItem("token");
+      navigate("/login");
+    } catch (error) {
+      console.error("Hesap silinemedi:", error);
+      alert("Hesap silinirken bir hata oluştu.");
+      setShowDeleteConfirm(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -128,9 +136,9 @@ export default function Ayarlar() {
                 placeholder="E-posta adresinizi girin"
               />
             </div>
-            <button className="settings-save-btn" onClick={handleSave}>
+            <button className="settings-save-btn" onClick={handleSave} disabled={loading}>
               <FiSave style={{ marginRight: '8px' }} />
-              Değişiklikleri Kaydet
+              {loading ? "Kaydediliyor..." : "Değişiklikleri Kaydet"}
             </button>
           </div>
         </div>
@@ -185,33 +193,6 @@ export default function Ayarlar() {
                   Gizle
                 </button>
               </div>
-            </div>
-            <div className="settings-field">
-              <label className="settings-label">
-                {emailNotificationsEnabled ? <FiBell style={{ marginRight: '8px' }} /> : <FiBellOff style={{ marginRight: '8px' }} />}
-                E-posta Bildirimleri
-              </label>
-              <div className="theme-selector">
-                <button
-                  className={`theme-btn ${emailNotificationsEnabled ? 'active' : ''}`}
-                  onClick={() => handleEmailNotificationsToggle(true)}
-                  disabled={loading}
-                >
-                  <FiBell style={{ marginRight: '8px' }} />
-                  Açık
-                </button>
-                <button
-                  className={`theme-btn ${!emailNotificationsEnabled ? 'active' : ''}`}
-                  onClick={() => handleEmailNotificationsToggle(false)}
-                  disabled={loading}
-                >
-                  <FiBellOff style={{ marginRight: '8px' }} />
-                  Kapalı
-                </button>
-              </div>
-              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px' }}>
-                E-posta bildirimleri açıkken, kayıt olduğunuzda hoş geldin e-postası ve hatırlatma tarihi geldiğinde bildirim e-postası alırsınız.
-              </p>
             </div>
           </div>
         </div>

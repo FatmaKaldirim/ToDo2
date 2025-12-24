@@ -110,10 +110,6 @@ builder.Services.AddScoped<NotesRepository>();
 builder.Services.AddScoped<IWeeklyTaskService, WeeklyTaskService>();
 builder.Services.AddScoped<IMonthlyTaskService, MonthlyTaskService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
-
-// Background Services
-builder.Services.AddHostedService<ReminderBackgroundService>();
 #endregion
 
 var app = builder.Build();

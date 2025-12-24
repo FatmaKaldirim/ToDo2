@@ -281,7 +281,7 @@ export default function Takvim() {
                     {date && (
                       <>
                         <div className="calendar-day-header">
-                          <div className="calendar-day-number">{date.getDate()}</div>
+                        <div className="calendar-day-number">{date.getDate()}</div>
                           {specialIcon && (
                             <span className="special-day-icon" title="Önemli Gün">
                               {specialIcon}

@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +10,6 @@ using System.Security.Cryptography;
 using System.Text;
 using ToDo2_Backend.DTOs;
 using ToDo2_Backend.Models;
-using ToDo2_Backend.Services.Interfaces;
 
 namespace ToDo2_Backend.Controllers
 {
@@ -21,15 +19,11 @@ namespace ToDo2_Backend.Controllers
     {
         private readonly SqlConnection _connection;
         private readonly IConfiguration _config;
-        private readonly IEmailService _emailService;
-        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(SqlConnection connection, IConfiguration config, IEmailService emailService, ILogger<UsersController> logger)
+        public UsersController(SqlConnection connection, IConfiguration config)
         {
             _connection = connection;
             _config = config;
-            _emailService = emailService;
-            _logger = logger;
         }
 
         // =========================
@@ -70,44 +64,6 @@ namespace ToDo2_Backend.Controllers
             };
 
             var token = GenerateJwtToken(user);
-
-            // Email bildirimleri aktifse hoş geldin emaili gönder
-            // Her zaman email göndermeyi dene (kullanıcı ayarı varsayılan olarak açık)
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    // Kısa bir gecikme ekle (kayıt işleminin tamamlanması için)
-                    await Task.Delay(1000);
-                    
-                    // Kullanıcı ayarını kontrol et
-                    var userSettings = await _connection.QueryFirstOrDefaultAsync<dynamic>(
-                        "SELECT EmailNotificationsEnabled FROM Users WHERE UserID = @UserID",
-                        new { UserID = newUserId }
-                    );
-
-                    // Email bildirimleri açıksa veya null ise (varsayılan açık) email gönder
-                    if (userSettings?.EmailNotificationsEnabled == true || userSettings?.EmailNotificationsEnabled == null)
-                    {
-                        await _emailService.SendWelcomeEmailAsync(dto.UserMail, dto.UserName);
-                        _logger.LogInformation($"Hoş geldin emaili gönderildi: {dto.UserMail}");
-                    }
-                    else
-                    {
-                        _logger.LogInformation($"Kullanıcı email bildirimlerini kapatmış: {dto.UserMail}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Hoş geldin emaili gönderilemedi: {dto.UserMail}");
-                    _logger.LogError($"Hata detayı: {ex.Message}");
-                    if (ex.InnerException != null)
-                    {
-                        _logger.LogError($"İç hata: {ex.InnerException.Message}");
-                    }
-                    // Email gönderilemese bile kayıt başarılı, hata loglanır ama kullanıcıya gösterilmez
-                }
-            });
 
             return Ok(new
             {
@@ -160,7 +116,7 @@ namespace ToDo2_Backend.Controllers
             }
 
             var user = await _connection.QueryFirstOrDefaultAsync<dynamic>(
-                @"SELECT UserID, UserName, UserMail, EmailNotificationsEnabled 
+                @"SELECT UserID, UserName, UserMail 
                   FROM Users 
                   WHERE UserID = @UserID",
                 new { UserID = userId }
@@ -175,17 +131,16 @@ namespace ToDo2_Backend.Controllers
             {
                 id = user.UserID,
                 name = user.UserName,
-                email = user.UserMail,
-                emailNotificationsEnabled = user.EmailNotificationsEnabled ?? true
+                email = user.UserMail
             });
         }
 
         // =========================
-        // UPDATE EMAIL NOTIFICATIONS
+        // UPDATE USER PROFILE
         // =========================
         [Authorize]
-        [HttpPut("email-notifications")]
-        public async Task<IActionResult> UpdateEmailNotifications([FromBody] UpdateEmailNotificationsDto dto)
+        [HttpPut("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
@@ -193,214 +148,52 @@ namespace ToDo2_Backend.Controllers
                 return Unauthorized();
             }
 
-            var parameters = new DynamicParameters();
-            parameters.Add("@UserID", userId);
-            parameters.Add("@EmailNotificationsEnabled", dto.EmailNotificationsEnabled);
+            // Email kontrolü (başka bir kullanıcı tarafından kullanılıyor mu?)
+            var existingUser = await _connection.QueryFirstOrDefaultAsync<dynamic>(
+                "SELECT UserID FROM Users WHERE UserMail = @Email AND UserID != @UserID",
+                new { Email = dto.Email, UserID = userId }
+            );
+
+            if (existingUser != null)
+            {
+                return BadRequest("Bu email adresi başka bir kullanıcı tarafından kullanılıyor.");
+            }
 
             await _connection.ExecuteAsync(
-                "sp_UpdateUserEmailNotifications",
-                parameters,
-                commandType: CommandType.StoredProcedure
+                @"UPDATE Users 
+                  SET UserName = @UserName, UserMail = @Email 
+                  WHERE UserID = @UserID",
+                new { UserID = userId, UserName = dto.Name, Email = dto.Email }
             );
 
             return Ok(new
             {
-                message = "Email bildirim ayarı güncellendi",
-                emailNotificationsEnabled = dto.EmailNotificationsEnabled
+                message = "Profil güncellendi",
+                name = dto.Name,
+                email = dto.Email
             });
         }
 
         // =========================
-        // GOOGLE LOGIN
+        // DELETE USER ACCOUNT
         // =========================
-        [AllowAnonymous]
-        [HttpPost("google-login")]
-        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginDto dto)
+        [Authorize]
+        [HttpDelete("delete-account")]
+        public async Task<IActionResult> DeleteAccount()
         {
-            try
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
             {
-                // Google token'ı doğrula
-                var settings = new GoogleJsonWebSignature.ValidationSettings
-                {
-                    Audience = new[] { _config["Google:ClientId"] }
-                };
-
-                var payload = await GoogleJsonWebSignature.ValidateAsync(dto.IdToken, settings);
-
-                if (payload == null)
-                {
-                    return Unauthorized("Geçersiz Google token.");
-                }
-
-                // Kullanıcıyı veritabanında ara veya oluştur
-                var existingUser = await _connection.QueryFirstOrDefaultAsync<User>(
-                    "SELECT * FROM Users WHERE UserMail = @Email",
-                    new { Email = payload.Email }
-                );
-
-                User user;
-                int userId;
-
-                if (existingUser == null)
-                {
-                    // Yeni kullanıcı oluştur (Google ile giriş yapanlar için şifre yok)
-                    var parameters = new DynamicParameters();
-                    parameters.Add("@UserName", payload.Name ?? payload.Email.Split('@')[0]);
-                    parameters.Add("@UserMail", payload.Email);
-                    parameters.Add("@PasswordHash", DBNull.Value);
-                    parameters.Add("@PasswordSalt", DBNull.Value);
-
-                    userId = await _connection.ExecuteScalarAsync<int>(
-                        "sp_RegisterGoogleUser",
-                        parameters,
-                        commandType: CommandType.StoredProcedure
-                    );
-
-                    if (userId == -1)
-                    {
-                        return BadRequest("Kullanıcı oluşturulamadı.");
-                    }
-
-                    user = new User
-                    {
-                        UserID = userId,
-                        UserName = payload.Name ?? payload.Email.Split('@')[0],
-                        UserMail = payload.Email,
-                        PasswordHash = null,
-                        PasswordSalt = null
-                    };
-
-                    // Hoş geldin emaili gönder
-                    try
-                    {
-                        _ = Task.Run(async () =>
-                        {
-                            try
-                            {
-                                await _emailService.SendWelcomeEmailAsync(payload.Email, user.UserName);
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.LogError(ex, "Hoş geldin emaili gönderilemedi");
-                            }
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Email gönderme kontrolü sırasında hata");
-                    }
-                }
-                else
-                {
-                    user = existingUser;
-                    userId = existingUser.UserID;
-                }
-
-                // JWT token oluştur
-                var token = GenerateJwtToken(user);
-
-                return Ok(new
-                {
-                    message = "Google ile giriş başarılı",
-                    userId = userId,
-                    token
-                });
+                return Unauthorized();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Google login hatası");
-                return Unauthorized("Google ile giriş başarısız.");
-            }
-        }
 
-        // =========================
-        // GOOGLE LOGIN (SIMPLE - Access Token ile)
-        // =========================
-        [AllowAnonymous]
-        [HttpPost("google-login-simple")]
-        public async Task<IActionResult> GoogleLoginSimple([FromBody] GoogleLoginSimpleDto dto)
-        {
-            try
-            {
-                // Kullanıcıyı veritabanında ara veya oluştur
-                var existingUser = await _connection.QueryFirstOrDefaultAsync<User>(
-                    "SELECT * FROM Users WHERE UserMail = @Email",
-                    new { Email = dto.Email }
-                );
+            // Kullanıcıyı sil (CASCADE ile ilgili tüm veriler silinecek)
+            await _connection.ExecuteAsync(
+                "DELETE FROM Users WHERE UserID = @UserID",
+                new { UserID = userId }
+            );
 
-                User user;
-                int userId;
-
-                if (existingUser == null)
-                {
-                    // Yeni kullanıcı oluştur
-                    var parameters = new DynamicParameters();
-                    parameters.Add("@UserName", dto.Name ?? dto.Email.Split('@')[0]);
-                    parameters.Add("@UserMail", dto.Email);
-                    parameters.Add("@PasswordHash", DBNull.Value);
-                    parameters.Add("@PasswordSalt", DBNull.Value);
-
-                    userId = await _connection.ExecuteScalarAsync<int>(
-                        "sp_RegisterGoogleUser",
-                        parameters,
-                        commandType: CommandType.StoredProcedure
-                    );
-
-                    if (userId == -1)
-                    {
-                        return BadRequest("Kullanıcı oluşturulamadı.");
-                    }
-
-                    user = new User
-                    {
-                        UserID = userId,
-                        UserName = dto.Name ?? dto.Email.Split('@')[0],
-                        UserMail = dto.Email,
-                        PasswordHash = null,
-                        PasswordSalt = null
-                    };
-
-                    // Hoş geldin emaili gönder
-                    try
-                    {
-                        _ = Task.Run(async () =>
-                        {
-                            try
-                            {
-                                await _emailService.SendWelcomeEmailAsync(dto.Email, user.UserName);
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.LogError(ex, "Hoş geldin emaili gönderilemedi");
-                            }
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Email gönderme kontrolü sırasında hata");
-                    }
-                }
-                else
-                {
-                    user = existingUser;
-                    userId = existingUser.UserID;
-                }
-
-                // JWT token oluştur
-                var token = GenerateJwtToken(user);
-
-                return Ok(new
-                {
-                    message = "Google ile giriş başarılı",
-                    userId = userId,
-                    token
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Google login hatası");
-                return Unauthorized("Google ile giriş başarısız.");
-            }
+            return Ok(new { message = "Hesap silindi" });
         }
 
         // =========================

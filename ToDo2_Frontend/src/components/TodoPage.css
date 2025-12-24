@@ -94,14 +94,32 @@
   align-items: center;
   gap: 12px;
   padding: 14px 18px;
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--background-primary);
   border: 1px solid var(--border-color-light);
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  margin-bottom: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  margin-bottom: 10px;
   position: relative;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.task-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary-light), transparent);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.task-row:hover::before {
+  width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -113,9 +131,10 @@
 
 .task-row:hover {
   background: var(--background-hover);
-  border-color: var(--accent-primary-light);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transform: translateY(-1px);
+  border-color: var(--accent-primary);
+  box-shadow: 0 4px 16px rgba(0, 120, 212, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px) scale(1.01);
+  border-width: 1.5px;
 }
 
 /* Task Row Colors - Subtle backgrounds */
@@ -141,13 +160,37 @@
 .task-row:has(.star-btn.important) {
   background: linear-gradient(135deg, var(--color-yellow-light) 0%, var(--background-primary) 100%);
   border-left: 4px solid var(--color-yellow);
-  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+  box-shadow: 0 2px 12px rgba(255, 193, 7, 0.25), 0 0 0 1px rgba(255, 193, 7, 0.1);
+  position: relative;
+}
+
+.task-row:has(.star-btn.important)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--color-yellow), var(--color-orange));
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.7);
+  }
 }
 
 .task-row:has(.star-btn.important):hover {
   background: linear-gradient(135deg, var(--color-yellow-light) 0%, var(--background-hover) 100%);
-  box-shadow: 0 3px 10px rgba(255, 193, 7, 0.3);
+  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.35), 0 0 0 1px rgba(255, 193, 7, 0.2);
   border-left-color: var(--color-orange);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .task-row.done {
@@ -275,26 +318,55 @@
 
 /* ===== Custom Checkbox ===== */
 .check-btn {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 2px solid var(--text-secondary);
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2.5px solid var(--text-secondary);
   background: transparent;
   cursor: pointer;
   flex-shrink: 0;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  z-index: 1;
+}
+
+.check-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  transform: translate(-50%, -50%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
 }
 
 .check-btn:hover {
   border-color: var(--accent-primary);
-  transform: scale(1.1);
-  box-shadow: 0 0 0 2px var(--accent-primary-light);
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 0 0 4px var(--accent-primary-light), 0 2px 8px rgba(0, 120, 212, 0.3);
+}
+
+.check-btn:hover::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
 }
 
 .check-btn.filled {
   background: var(--accent-primary);
   border-color: var(--accent-primary);
+  transform: scale(1);
+  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
+}
+
+.check-btn.filled::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
 }
 
 .check-btn.filled::after {
@@ -302,10 +374,30 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0);
   color: white;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
+  animation: checkmark-pop 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes checkmark-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.check-btn.filled:hover {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
 }
 
 /* ===== Star Button ===== */
@@ -313,31 +405,72 @@
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 6px;
-  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 8px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.star-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--accent-primary-light);
+  transform: translate(-50%, -50%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
 }
 
 .star-btn:hover {
   color: var(--accent-primary);
-  background: var(--accent-primary-light);
-  transform: scale(1.15);
+  transform: scale(1.2) rotate(15deg);
+}
+
+.star-btn:hover::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
 }
 
 .star-btn.important {
   color: var(--color-yellow);
+  animation: star-pulse 2s ease-in-out infinite;
+}
+
+.star-btn.important::before {
   background: var(--color-yellow-light);
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+@keyframes star-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(255, 193, 7, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(255, 193, 7, 0.8));
+  }
 }
 
 .star-btn.important:hover {
   color: var(--color-orange);
+  transform: scale(1.3) rotate(-15deg);
+  filter: drop-shadow(0 0 12px rgba(255, 140, 0, 0.9));
+}
+
+.star-btn.important:hover::before {
   background: var(--color-orange-light);
-  transform: scale(1.15);
 }
 
 /* ===== Completed Section ===== */
