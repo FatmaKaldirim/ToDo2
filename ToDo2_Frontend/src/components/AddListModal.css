@@ -4,13 +4,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.1s ease-out;
 }
 
 @keyframes fadeIn {
@@ -23,15 +22,16 @@
 }
 
 .modal-content {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  background: var(--background-primary);
+  border-radius: 4px;
+  box-shadow: var(--shadow-soft);
   width: 90%;
   max-width: 480px;
   max-height: 90vh;
   overflow-y: auto;
-  animation: slideUp 0.3s ease-out;
+  animation: slideUp 0.2s ease-out;
   position: relative;
+  border: 1px solid var(--border-color);
 }
 
 @keyframes slideUp {
@@ -53,15 +53,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 24px 20px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h2 {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .modal-close-btn {
@@ -72,15 +72,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  color: #6b7280;
-  transition: all 0.2s ease;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  transition: background-color 0.1s ease, color 0.1s ease;
   font-size: 20px;
 }
 
 .modal-close-btn:hover {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: var(--background-hover);
+  color: var(--text-primary);
 }
 
 .modal-form {
@@ -88,49 +88,51 @@
 }
 
 .form-group {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  font-weight: 500;
-  color: #374151;
+  font-weight: 400;
+  color: var(--text-primary);
 }
 
 .form-group input {
   width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 15px;
   font-family: inherit;
-  transition: all 0.2s ease;
+  transition: border-color 0.1s ease;
   box-sizing: border-box;
+  background: var(--background-primary);
+  color: var(--text-primary);
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 1px var(--accent-primary);
 }
 
 .form-group input.input-error {
-  border-color: #ef4444;
+  border-color: #d13438;
 }
 
 .form-group input.input-error:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  border-color: #d13438;
+  box-shadow: 0 0 0 1px rgba(209, 52, 56, 0.2);
 }
 
 .error-message {
   display: block;
   margin-top: 8px;
   font-size: 13px;
-  color: #ef4444;
-  font-weight: 500;
+  color: #d13438;
+  font-weight: 400;
 }
 
 .modal-actions {
@@ -141,13 +143,13 @@
 
 .btn-cancel,
 .btn-submit {
-  padding: 12px 24px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,28 +157,27 @@
 }
 
 .btn-cancel {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .btn-cancel:hover {
-  background: #e5e7eb;
+  background: var(--background-hover);
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+  background: var(--accent-primary);
   color: white;
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+  box-shadow: none;
 }
 
 .btn-submit:hover {
-  background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  background: var(--accent-primary-hover);
 }
 
 .btn-submit:active {
-  transform: translateY(0);
+  background: var(--accent-primary-hover);
 }
 
 @media (max-width: 768px) {
@@ -199,7 +200,7 @@
   }
 
   .form-group input {
-    font-size: 16px; /* iOS zoom önleme */
+    font-size: 16px;
   }
 
   .modal-actions {
@@ -209,7 +210,6 @@
   .btn-cancel,
   .btn-submit {
     width: 100%;
-    padding: 14px 24px;
+    padding: 12px 24px;
   }
 }
-

@@ -15,8 +15,13 @@ export default function NotDefteri() {
     setLoading(true);
     try {
       const res = await api.get("/Notes/me");
-      // Sadece taskID'si null olan notları göster (sadece not defteri notları)
-      const notebookNotes = (res.data || []).filter(note => !note.taskID);
+      // Sadece not defteri notlarını göster (taskID null ve takvim notu değil)
+      const notebookNotes = (res.data || []).filter(note => {
+        // Takvim notları: taskID null ve [tarih] formatında başlayan
+        const isCalendarNote = note.taskID === null && /^\[\d{1,2}\.\d{1,2}\.\d{4}\]/.test(note.noteText);
+        // Sadece not defteri notlarını göster (taskID null ama takvim notu değil)
+        return note.taskID === null && !isCalendarNote;
+      });
       setNotes(notebookNotes);
     } catch (error) {
       console.error("Failed to load notes:", error);

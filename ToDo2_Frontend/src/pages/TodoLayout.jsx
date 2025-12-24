@@ -4,7 +4,7 @@ import { useAuth } from "../utils/auth";
 import { useCallback, useEffect, useState } from "react";
 import api from "../api/axios";
 import { useSearch } from "../context/SearchContext.jsx";
-import { FiSearch, FiLogOut, FiCalendar, FiStar, FiClock, FiFileText, FiCheckCircle, FiBookOpen, FiSettings, FiMenu, FiX } from "react-icons/fi";
+import { FiSearch, FiLogOut, FiCalendar, FiStar, FiClock, FiFileText, FiCheckCircle, FiBookOpen, FiSettings, FiMenu, FiX, FiChevronLeft, FiChevronRight, FiArchive } from "react-icons/fi";
 import AddListModal from "../components/AddListModal";
 
 function TodoLayout() {
@@ -16,6 +16,7 @@ function TodoLayout() {
   const { searchTerm, setSearchTerm } = useSearch();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAddListModalOpen, setIsAddListModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const fetchLists = useCallback(async () => {
     try {
@@ -37,6 +38,17 @@ function TodoLayout() {
       setSearchTerm('');
     }
   }, [location, setSearchTerm]);
+
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.classList.remove('sidebar-closed');
+    } else {
+      document.body.classList.add('sidebar-closed');
+    }
+    return () => {
+      document.body.classList.remove('sidebar-closed');
+    };
+  }, [isSidebarOpen]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -106,7 +118,22 @@ function TodoLayout() {
       {isMobileMenuOpen && (
         <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
       )}
-      <aside className={`sidebar ${isMobileMenuOpen ? "mobile-open" : ""}`}>
+      <aside className={`sidebar ${isMobileMenuOpen ? "mobile-open" : ""} ${isSidebarOpen ? "open" : "closed"}`}>
+        <div className="sidebar-logo">
+          <div className="logo-icon">✓</div>
+          <div className="logo-text">
+            <span className="logo-text-main">To Do</span>
+            <span className="logo-text-sub">List</span>
+          </div>
+        </div>
+        <button 
+          className="sidebar-toggle"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          aria-label="Toggle Sidebar"
+          title={isSidebarOpen ? "Sidebar'ı Kapat" : "Sidebar'ı Aç"}
+        >
+          {isSidebarOpen ? <FiChevronLeft /> : <FiChevronRight />}
+        </button>
         {user && (
           <div className="profile">
             <div className="avatar">{user.name ? user.name.charAt(0).toUpperCase() : "U"}</div>
@@ -127,24 +154,6 @@ function TodoLayout() {
             </button>
           </div>
         )}
-        <div style={{ position: 'relative', marginBottom: '16px' }}>
-          <FiSearch style={{ 
-            position: 'absolute', 
-            left: '12px', 
-            top: '50%', 
-            transform: 'translateY(-50%)', 
-            color: '#9ca3af',
-            fontSize: '14px',
-            zIndex: 1,
-            pointerEvents: 'none'
-          }} />
-          <input 
-            className="search" 
-            placeholder="Ara"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </div>
         <nav>
           <NavLink 
             to="/gunum" 
@@ -195,6 +204,14 @@ function TodoLayout() {
             Tamamlananlar
           </NavLink>
           <NavLink 
+            to="/gecmis" 
+            className={({ isActive }) => (isActive ? "nav active" : "nav")}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <FiArchive style={{ marginRight: '8px', fontSize: '16px' }} />
+            Geçmiş
+          </NavLink>
+          <NavLink 
             to="/not-defteri" 
             className={({ isActive }) => (isActive ? "nav active" : "nav")}
             onClick={() => setIsMobileMenuOpen(false)}
@@ -232,7 +249,7 @@ function TodoLayout() {
           ))}
         </nav>
       </aside>
-      <main className="daily">
+      <main className={`daily ${!isSidebarOpen ? "sidebar-closed" : ""}`}>
         <Outlet />
       </main>
       <AddListModal

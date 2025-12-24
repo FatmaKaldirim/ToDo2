@@ -15,6 +15,7 @@ import Takvim from "./pages/Takvim";
 import Tamamlananlar from "./pages/Tamamlananlar";
 import NotDefteri from "./pages/NotDefteri";
 import Ayarlar from "./pages/Ayarlar";
+import Gecmis from "./pages/Gecmis";
 
 // 🔐 Auth kontrol componenti
 const RequireAuth = ({ children }) => {
@@ -59,6 +60,7 @@ function App() {
             <Route path="notlar" element={<Notlar />} />
             <Route path="takvim" element={<Takvim />} />
             <Route path="tamamlananlar" element={<Tamamlananlar />} />
+            <Route path="gecmis" element={<Gecmis />} />
             <Route path="not-defteri" element={<NotDefteri />} />
             <Route path="ayarlar" element={<Ayarlar />} />
             <Route path="lists/:listId" element={<ListPage />} />

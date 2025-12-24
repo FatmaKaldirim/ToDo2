@@ -10,21 +10,49 @@
 }
 
 .note-card {
-  background: #ffffff;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--color-blue);
+  border-radius: 4px;
   padding: 16px;
   position: relative;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow 0.1s ease;
   cursor: pointer;
   min-height: 150px;
   display: flex;
   flex-direction: column;
 }
 
+.note-card:nth-child(2n) {
+  border-left-color: var(--color-green);
+}
+
+.note-card:nth-child(3n) {
+  border-left-color: var(--color-purple);
+}
+
+.note-card:nth-child(4n) {
+  border-left-color: var(--color-orange);
+}
+
+.note-card:nth-child(5n) {
+  border-left-color: var(--color-pink);
+}
+
+.note-card:nth-child(6n) {
+  border-left-color: var(--color-teal);
+}
+
+.note-card:nth-child(7n) {
+  border-left-color: var(--color-yellow);
+}
+
+.note-card:nth-child(8n) {
+  border-left-color: var(--color-red);
+}
+
 .note-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
 }
 
 .note-content {
@@ -36,7 +64,7 @@
 
 .note-text {
   margin: 0;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 14px;
   line-height: 1.6;
   white-space: pre-wrap;
@@ -46,18 +74,18 @@
 
 .note-task-badge {
   display: inline-block;
-  background: #e0e7ff;
-  color: #667eea;
+  background: var(--color-blue-light);
+  color: var(--color-blue);
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 400;
   align-self: flex-start;
 }
 
 .note-date {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-top: auto;
 }
 
@@ -67,13 +95,13 @@
   right: 12px;
   background: none;
   border: none;
-  color: #6c757d;
+  color: var(--text-secondary);
   cursor: pointer;
   font-size: 16px;
   padding: 4px;
   border-radius: 4px;
   opacity: 0;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.1s ease, background-color 0.1s ease;
 }
 
 .note-card:hover .note-delete-btn {
@@ -81,8 +109,8 @@
 }
 
 .note-delete-btn:hover {
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--background-hover);
+  color: var(--text-primary);
 }
 
 .note-edit-mode {
@@ -95,18 +123,20 @@
 .note-edit-textarea {
   width: 100%;
   min-height: 120px;
-  padding: 12px;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
   font-size: 14px;
   font-family: inherit;
   resize: vertical;
   outline: none;
+  background: var(--background-primary);
+  color: var(--text-primary);
 }
 
 .note-edit-textarea:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 1px var(--accent-primary);
 }
 
 .note-edit-actions {
@@ -117,34 +147,34 @@
 
 .note-save-btn {
   padding: 8px 16px;
-  background: #667eea;
+  background: var(--accent-primary);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background-color 0.1s ease;
 }
 
 .note-save-btn:hover {
-  background: #5568d3;
+  background: var(--accent-primary-hover);
 }
 
 .note-cancel-btn {
   padding: 8px 16px;
-  background: #e5e7eb;
-  color: #1f2937;
-  border: none;
-  border-radius: 6px;
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background-color 0.1s ease;
 }
 
 .note-cancel-btn:hover {
-  background: #d1d5db;
+  background: var(--background-hover);
 }
 
 @media (max-width: 768px) {
@@ -162,4 +192,3 @@
     font-size: 14px;
   }
 }
-

@@ -1,89 +1,144 @@
 :root {
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  /* Base font size - fixed to prevent browser zoom issues */
-  --base-font-size: 18px;
-
-  /* New Light & Pastel Color Palette */
-  --background-primary: #fef7ff; /* Very light pink */
-  --background-secondary: #ffffff; /* White */
-  --background-tertiary: #f3f4f6; /* Light grey for elements */
+  /* Microsoft To Do Color Palette */
+  --background-primary: #ffffff;
+  --background-secondary: #f5f5f5;
+  --background-tertiary: #f3f2f1;
+  --background-hover: #edebe9;
   
-  --text-primary: #1f2937; /* Dark grey for text */
-  --text-secondary: #6c757d; /* Lighter grey for secondary text */
+  --text-primary: #323130;
+  --text-secondary: #605e5c;
+  --text-tertiary: #8a8886;
   
-  /* Pastel Colors */
-  --accent-primary: #a78bfa; /* Pastel purple */
-  --accent-primary-transparent: rgba(167, 139, 250, 0.15);
-  --accent-secondary: #f472b6; /* Pastel pink */
-  --accent-tertiary: #60a5fa; /* Pastel blue */
-  --accent-quaternary: #34d399; /* Pastel green */
-  --accent-quinary: #fbbf24; /* Pastel yellow */
+  /* Microsoft Blue - Primary Accent */
+  --accent-primary: #0078d4;
+  --accent-primary-hover: #106ebe;
+  --accent-primary-light: #deecf9;
   
-  /* Task Colors */
-  --task-blue: #e0e7ff;
-  --task-pink: #fce7f3;
-  --task-green: #d1fae5;
-  --task-yellow: #fef3c7;
-  --task-purple: #f3e8ff;
-  --task-orange: #fed7aa;
-
-  --border-color: #e5e7eb;
-  --shadow-color: rgba(0, 0, 0, 0.05);
+  /* Microsoft To Do Color Palette - Extended */
+  --color-red: #d13438;
+  --color-red-light: #fef6f6;
+  --color-orange: #ff8c00;
+  --color-orange-light: #fff8f0;
+  --color-yellow: #ffb900;
+  --color-yellow-light: #fffef0;
+  --color-green: #107c10;
+  --color-green-light: #f0f9f0;
+  --color-teal: #008272;
+  --color-teal-light: #f0f9f7;
+  --color-blue: #0078d4;
+  --color-blue-light: #deecf9;
+  --color-purple: #8764b8;
+  --color-purple-light: #f3f0f9;
+  --color-pink: #e3008c;
+  --color-pink-light: #fef0f7;
+  
+  /* Navigation Colors */
+  --nav-today: #0078d4;
+  --nav-important: #ffb900;
+  --nav-planned: #8764b8;
+  --nav-notes: #107c10;
+  --nav-calendar: #008272;
+  --nav-completed: #605e5c;
+  --nav-history: #8a8886;
+  --nav-notebook: #e3008c;
+  --nav-settings: #d13438;
+  
+  --border-color: #edebe9;
+  --border-color-light: #f3f2f1;
+  
+  --shadow-soft: 0 1.6px 3.6px rgba(0, 0, 0, 0.13), 0 0.3px 0.9px rgba(0, 0, 0, 0.11);
+  --shadow-hover: 0 3.2px 7.2px rgba(0, 0, 0, 0.13), 0 0.6px 1.8px rgba(0, 0, 0, 0.11);
 
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark Theme - Microsoft To Do Dark Mode */
+[data-theme="dark"] {
+  --background-primary: #1e1e1e;
+  --background-secondary: #252423;
+  --background-tertiary: #2d2c2c;
+  --background-hover: #323130;
   
-  /* Force font size - prevent browser scaling */
-  -webkit-text-size-adjust: 100% !important;
-  -moz-text-size-adjust: 100% !important;
-  text-size-adjust: 100% !important;
+  --text-primary: #ffffff;
+  --text-secondary: #c8c6c4;
+  --text-tertiary: #8a8886;
+  
+  --accent-primary: #60cdff;
+  --accent-primary-hover: #4db8ff;
+  --accent-primary-light: #1a3a4a;
+  
+  /* Dark Theme Colors */
+  --color-red: #f48788;
+  --color-red-light: #3a1f1f;
+  --color-orange: #ffb366;
+  --color-orange-light: #3a2a1f;
+  --color-yellow: #ffd966;
+  --color-yellow-light: #3a321f;
+  --color-green: #6fcf97;
+  --color-green-light: #1f3a1f;
+  --color-teal: #66d9cf;
+  --color-teal-light: #1f3a35;
+  --color-blue: #60cdff;
+  --color-blue-light: #1a3a4a;
+  --color-purple: #b896d9;
+  --color-purple-light: #2a1f3a;
+  --color-pink: #ff66b3;
+  --color-pink-light: #3a1f2f;
+  
+  /* Navigation Colors - Dark */
+  --nav-today: #60cdff;
+  --nav-important: #ffd966;
+  --nav-planned: #b896d9;
+  --nav-notes: #6fcf97;
+  --nav-calendar: #66d9cf;
+  --nav-completed: #c8c6c4;
+  --nav-history: #8a8886;
+  --nav-notebook: #ff66b3;
+  --nav-settings: #f48788;
+  
+  --border-color: #3b3a39;
+  --border-color-light: #2d2c2c;
+  
+  --shadow-soft: 0 1.6px 3.6px rgba(0, 0, 0, 0.4), 0 0.3px 0.9px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 3.2px 7.2px rgba(0, 0, 0, 0.5), 0 0.6px 1.8px rgba(0, 0, 0, 0.4);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  /* Force font size consistency across browsers */
-  -webkit-text-size-adjust: 100% !important;
-  -moz-text-size-adjust: 100% !important;
-  text-size-adjust: 100% !important;
 }
 
 html {
-  font-size: 18px !important;
-  line-height: 1.5;
-  -webkit-text-size-adjust: 100% !important;
-  -moz-text-size-adjust: 100% !important;
-  text-size-adjust: 100% !important;
-  zoom: 1.17 !important;
-}
-
-@media (max-width: 768px) {
-  html {
-    font-size: 16px !important;
-    zoom: 1 !important;
-  }
+  font-size: 14px;
+  line-height: 1.4;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
-  font-size: 18px !important;
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.4;
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   min-height: 100vh;
-  background-color: var(--background-primary);
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--background-primary);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100% !important;
-  -moz-text-size-adjust: 100% !important;
-  text-size-adjust: 100% !important;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  zoom: 1.25;
 }
 
 #root {
@@ -100,4 +155,40 @@ a {
 button {
   font-family: inherit;
   cursor: pointer;
+}
+
+/* Global Scrollbar Styling - Microsoft Style */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+[data-theme="dark"] *::-webkit-scrollbar-thumb {
+  background: #484644;
+}
+
+[data-theme="dark"] *::-webkit-scrollbar-thumb:hover {
+  background: #605e5c;
 }

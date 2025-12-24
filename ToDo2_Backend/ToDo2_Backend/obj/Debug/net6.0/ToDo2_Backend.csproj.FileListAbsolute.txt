@@ -269,3 +269,10 @@ C:\Users\User\OneDrive\Masaüstü\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\De
 C:\Users\User\OneDrive\Masaüstü\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ToDo2_Backend.genruntimeconfig.cache
 C:\Users\User\OneDrive\Masaüstü\ToDo2\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\ref\ToDo2_Backend.dll
 C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\bin\Debug\net6.0\Google.Apis.dll
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\bin\Debug\net6.0\Google.Apis.Auth.dll
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\bin\Debug\net6.0\Google.Apis.Core.dll
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\bin\Debug\net6.0\System.CodeDom.dll
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\bin\Debug\net6.0\System.Management.dll
+C:\Users\Asus\Desktop\ToDo2\ToDo2_Backend\ToDo2_Backend\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Management.dll

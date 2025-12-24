@@ -13,6 +13,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent form submission from reloading the page
     setLoading(true);
@@ -58,6 +59,7 @@ function AuthPage() {
     setEmail("");
     setPassword("");
   };
+
 
   return (
     <main className="auth-container">
@@ -105,6 +107,7 @@ function AuthPage() {
             {loading ? "İşleniyor..." : isRegister ? "KAYIT OL" : "GİRİŞ YAP"}
           </button>
         </form>
+
 
         <p className="switch-text">
           {isRegister ? (

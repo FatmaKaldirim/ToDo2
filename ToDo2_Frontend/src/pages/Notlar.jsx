@@ -12,7 +12,13 @@ export default function Notlar() {
     setLoading(true);
     try {
       const res = await api.get("/Notes/me");
-      setNotes(res.data || []);
+      // Takvim notlarını filtrele (taskID null ve tarih formatında başlayan notları çıkar)
+      const filteredNotes = (res.data || []).filter(note => {
+        // Takvim notları: taskID null ve [tarih] formatında başlayan
+        const isCalendarNote = note.taskID === null && /^\[\d{1,2}\.\d{1,2}\.\d{4}\]/.test(note.noteText);
+        return !isCalendarNote; // Takvim notlarını çıkar
+      });
+      setNotes(filteredNotes);
     } catch (error) {
       console.error("Failed to load notes:", error);
       setNotes([]);

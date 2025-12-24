@@ -12,8 +12,14 @@ export default function Takvim() {
   const [weeklyTasks, setWeeklyTasks] = useState([]);
   const [monthlyTasks, setMonthlyTasks] = useState([]);
   const [dailyNotes, setDailyNotes] = useState([]);
+  const [allNotes, setAllNotes] = useState([]);
   const [newNoteText, setNewNoteText] = useState("");
   const [selectedDateForNote, setSelectedDateForNote] = useState(null);
+  const [hoveredDate, setHoveredDate] = useState(null);
+  const [showNotesModal, setShowNotesModal] = useState(false);
+  const [modalDate, setModalDate] = useState(null);
+  const [editingNoteId, setEditingNoteId] = useState(null);
+  const [editingNoteText, setEditingNoteText] = useState("");
   const [loading, setLoading] = useState(true);
 
   const loadDailyTasks = useCallback(async () => {
@@ -49,12 +55,26 @@ export default function Takvim() {
     }
   }, [user?.id]);
 
+  const loadCalendarNotes = useCallback(async () => {
+    try {
+      const res = await api.get("/Notes/me");
+      // Sadece takvim notlarını filtrele (taskID null ve tarih formatında başlayan)
+      const calendarNotes = (res.data || []).filter(note => 
+        note.taskID === null && /^\[\d{1,2}\.\d{1,2}\.\d{4}\]/.test(note.noteText)
+      );
+      setAllNotes(calendarNotes);
+    } catch (error) {
+      console.error("Failed to load calendar notes:", error);
+      setAllNotes([]);
+    }
+  }, []);
+
   useEffect(() => {
     setLoading(true);
-    Promise.all([loadDailyTasks(), loadWeeklyTasks(), loadMonthlyTasks()]).then(() => {
+    Promise.all([loadDailyTasks(), loadWeeklyTasks(), loadMonthlyTasks(), loadCalendarNotes()]).then(() => {
       setLoading(false);
     });
-  }, [loadDailyTasks, loadWeeklyTasks, loadMonthlyTasks]);
+  }, [loadDailyTasks, loadWeeklyTasks, loadMonthlyTasks, loadCalendarNotes]);
 
   const addDailyNote = async (date) => {
     if (!newNoteText.trim()) return;
@@ -65,10 +85,64 @@ export default function Takvim() {
       });
       setNewNoteText("");
       setSelectedDateForNote(null);
-      // Reload notes if needed
+      await loadCalendarNotes();
     } catch (error) {
       console.error("Failed to add note:", error);
     }
+  };
+
+  const getNotesForDate = (date) => {
+    if (!date) return [];
+    const dateStr = date.toLocaleDateString('tr-TR');
+    return allNotes.filter(note => {
+      const match = note.noteText.match(/^\[([^\]]+)\]/);
+      if (match) {
+        return match[1] === dateStr;
+      }
+      return false;
+    });
+  };
+
+  // Önemli günler için sembol fonksiyonu
+  const getSpecialDayIcon = (date) => {
+    if (!date) return null;
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    
+    // Yılbaşı - 1 Ocak
+    if (month === 1 && day === 1) return '🎄';
+    
+    // 14 Şubat Sevgililer Günü
+    if (month === 2 && day === 14) return '💝';
+    
+    // 8 Mart Dünya Kadınlar Günü
+    if (month === 3 && day === 8) return '🌸';
+    
+    // 23 Nisan Ulusal Egemenlik ve Çocuk Bayramı
+    if (month === 4 && day === 23) return '🇹🇷';
+    
+    // 1 Mayıs İşçi Bayramı
+    if (month === 5 && day === 1) return '👷';
+    
+    // 19 Mayıs Atatürk'ü Anma, Gençlik ve Spor Bayramı
+    if (month === 5 && day === 19) return '🇹🇷';
+    
+    // 15 Temmuz Demokrasi ve Milli Birlik Günü
+    if (month === 7 && day === 15) return '🇹🇷';
+    
+    // 30 Ağustos Zafer Bayramı
+    if (month === 8 && day === 30) return '🇹🇷';
+    
+    // 29 Ekim Cumhuriyet Bayramı
+    if (month === 10 && day === 29) return '🇹🇷';
+    
+    // 10 Kasım Atatürk'ü Anma Günü
+    if (month === 11 && day === 10) return '🇹🇷';
+    
+    // 31 Aralık Yılbaşı Arifesi
+    if (month === 12 && day === 31) return '🎉';
+    
+    return null;
   };
 
   const getDaysInMonth = (date) => {
@@ -192,9 +266,11 @@ export default function Takvim() {
             <div className="calendar-days">
               {days.map((date, index) => {
                 const tasks = getTasksForDate(date);
+                const notes = getNotesForDate(date);
                 const totalTasks = tasks.daily.length + tasks.weekly.length + tasks.monthly.length;
                 const isToday = isSameDay(date, new Date());
                 const isSelected = isSameDay(date, selectedDateForNote);
+                const specialIcon = getSpecialDayIcon(date);
 
                 return (
                   <div
@@ -204,7 +280,39 @@ export default function Takvim() {
                   >
                     {date && (
                       <>
-                        <div className="calendar-day-number">{date.getDate()}</div>
+                        <div className="calendar-day-header">
+                          <div className="calendar-day-number">{date.getDate()}</div>
+                          {specialIcon && (
+                            <span className="special-day-icon" title="Önemli Gün">
+                              {specialIcon}
+                            </span>
+                          )}
+                        </div>
+                        {notes.length > 0 && (
+                          <div 
+                            className="calendar-notes-badge"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setModalDate(date);
+                              setShowNotesModal(true);
+                            }}
+                            onMouseEnter={() => setHoveredDate(date)}
+                            onMouseLeave={() => setHoveredDate(null)}
+                            title={`${notes.length} not - Tıklayarak görüntüle`}
+                          >
+                            <span className="note-icon-small">📝</span>
+                            <span className="note-count">{notes.length}</span>
+                            {hoveredDate && isSameDay(hoveredDate, date) && (
+                              <div className="notes-tooltip">
+                                {notes.map((note, idx) => (
+                                  <div key={idx} className="tooltip-note-item">
+                                    {note.noteText.replace(/^\[[^\]]+\]\s*/, '')}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
                         {totalTasks > 0 && (
                           <div className="calendar-day-tasks">
                             {tasks.daily.length > 0 && (
@@ -281,8 +389,10 @@ export default function Takvim() {
                 }
                 return weekDays.map((day, idx) => {
                   const tasks = getTasksForDate(day);
+                  const notes = getNotesForDate(day);
                   const isToday = isSameDay(day, new Date());
                   const isSelected = isSameDay(day, selectedDateForNote);
+                  const specialIcon = getSpecialDayIcon(day);
                   return (
                     <div
                       key={idx}
@@ -291,7 +401,99 @@ export default function Takvim() {
                     >
                       <div className="weekly-day-number">
                         {day.getDate()} {monthNames[day.getMonth()].substring(0, 3)}
+                        {specialIcon && (
+                          <span className="special-day-icon" title="Önemli Gün" style={{ marginLeft: '8px' }}>
+                            {specialIcon}
+                          </span>
+                        )}
                       </div>
+                      {notes.length > 0 && (
+                        <div className="weekly-notes-list">
+                          {notes.map((note, noteIdx) => (
+                            <div key={noteIdx} className="weekly-note-item-full">
+                              {editingNoteId === note.noteID ? (
+                                <div className="weekly-note-edit">
+                                  <textarea
+                                    className="weekly-note-edit-input"
+                                    value={editingNoteText}
+                                    onChange={(e) => setEditingNoteText(e.target.value)}
+                                    autoFocus
+                                    rows={3}
+                                  />
+                                  <div className="weekly-note-edit-actions">
+                                    <button
+                                      className="weekly-note-save-btn"
+                                      onClick={async () => {
+                                        try {
+                                          await api.put("/Notes/update", {
+                                            noteID: note.noteID,
+                                            taskID: null,
+                                            noteText: `[${day.toLocaleDateString('tr-TR')}] ${editingNoteText}`
+                                          });
+                                          setEditingNoteId(null);
+                                          setEditingNoteText("");
+                                          await loadCalendarNotes();
+                                        } catch (error) {
+                                          console.error("Failed to update note:", error);
+                                        }
+                                      }}
+                                    >
+                                      Kaydet
+                                    </button>
+                                    <button
+                                      className="weekly-note-cancel-btn"
+                                      onClick={() => {
+                                        setEditingNoteId(null);
+                                        setEditingNoteText("");
+                                      }}
+                                    >
+                                      İptal
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <div className="weekly-note-content">
+                                    <span className="weekly-note-text">
+                                      {note.noteText.replace(/^\[[^\]]+\]\s*/, '')}
+                                    </span>
+                                    <div className="weekly-note-actions">
+                                      <button
+                                        className="weekly-note-action-btn"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setEditingNoteId(note.noteID);
+                                          setEditingNoteText(note.noteText.replace(/^\[[^\]]+\]\s*/, ''));
+                                        }}
+                                        title="Düzenle"
+                                      >
+                                        ✏️
+                                      </button>
+                                      <button
+                                        className="weekly-note-action-btn"
+                                        onClick={async (e) => {
+                                          e.stopPropagation();
+                                          if (window.confirm("Bu notu silmek istediğinize emin misiniz?")) {
+                                            try {
+                                              await api.delete(`/Notes/delete/${note.noteID}`);
+                                              await loadCalendarNotes();
+                                            } catch (error) {
+                                              console.error("Failed to delete note:", error);
+                                            }
+                                          }
+                                        }}
+                                        title="Sil"
+                                      >
+                                        🗑️
+                                      </button>
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <div className="weekly-day-tasks">
                         {tasks.daily.map((task, tIdx) => (
                           <div key={tIdx} className="weekly-task-item daily">
@@ -338,6 +540,32 @@ export default function Takvim() {
           </div>
         )}
       </div>
+
+      {/* Notes Modal */}
+      {showNotesModal && modalDate && (
+        <div className="notes-modal-overlay" onClick={() => setShowNotesModal(false)}>
+          <div className="notes-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="notes-modal-header">
+              <h3>{formatDate(modalDate)} - Notlar</h3>
+              <button className="notes-modal-close" onClick={() => setShowNotesModal(false)}>✕</button>
+            </div>
+            <div className="notes-modal-content">
+              {getNotesForDate(modalDate).length === 0 ? (
+                <p className="no-notes-in-modal">Bu güne ait not yok.</p>
+              ) : (
+                getNotesForDate(modalDate).map((note, idx) => (
+                  <div key={idx} className="modal-note-item">
+                    <p>{note.noteText.replace(/^\[[^\]]+\]\s*/, '')}</p>
+                    <span className="modal-note-date">
+                      {new Date(note.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 import "./Ayarlar.css";
-import { FiSettings, FiUser, FiMail, FiLogOut, FiTrash2, FiSave } from "react-icons/fi";
+import { FiSettings, FiUser, FiMail, FiLogOut, FiTrash2, FiSave, FiSun, FiMoon, FiEye, FiEyeOff, FiBell, FiBellOff } from "react-icons/fi";
 
 export default function Ayarlar() {
   const { user } = useAuth();
@@ -10,6 +11,63 @@ export default function Ayarlar() {
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
+  const [showCompletedTasks, setShowCompletedTasks] = useState(() => {
+    return localStorage.getItem('showCompletedTasks') !== 'false';
+  });
+  const [emailNotificationsEnabled, setEmailNotificationsEnabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    localStorage.setItem('showCompletedTasks', showCompletedTasks);
+    // Global state'e kaydet veya context kullan
+    document.body.setAttribute('data-show-completed', showCompletedTasks);
+  }, [showCompletedTasks]);
+
+  // Kullanıcı bilgilerini yükle
+  useEffect(() => {
+    const loadUserInfo = async () => {
+      try {
+        setLoadingUser(true);
+        const res = await api.get("/Users/me");
+        setName(res.data.name || "");
+        setEmail(res.data.email || "");
+        setEmailNotificationsEnabled(res.data.emailNotificationsEnabled ?? true);
+      } catch (error) {
+        console.error("Kullanıcı bilgileri yüklenemedi:", error);
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    if (user) {
+      loadUserInfo();
+    }
+  }, [user]);
+
+  // Email bildirim ayarını güncelle
+  const handleEmailNotificationsToggle = async (enabled) => {
+    try {
+      setLoading(true);
+      await api.put("/Users/email-notifications", {
+        emailNotificationsEnabled: enabled
+      });
+      setEmailNotificationsEnabled(enabled);
+    } catch (error) {
+      console.error("Email bildirim ayarı güncellenemedi:", error);
+      alert("Email bildirim ayarı güncellenirken bir hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSave = () => {
     // TODO: API call to update user profile
@@ -84,8 +142,76 @@ export default function Ayarlar() {
             <h2 className="settings-section-title">Uygulama Ayarları</h2>
           </div>
           <div className="settings-content">
-            <div className="settings-info">
-              <p>Uygulama ayarları yakında eklenecek.</p>
+            <div className="settings-field">
+              <label className="settings-label">
+                <FiSun style={{ marginRight: '8px' }} />
+                Tema
+              </label>
+              <div className="theme-selector">
+                <button
+                  className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
+                  onClick={() => setTheme('light')}
+                >
+                  <FiSun style={{ marginRight: '8px' }} />
+                  Açık Tema
+                </button>
+                <button
+                  className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
+                  onClick={() => setTheme('dark')}
+                >
+                  <FiMoon style={{ marginRight: '8px' }} />
+                  Koyu Tema
+                </button>
+              </div>
+            </div>
+            <div className="settings-field">
+              <label className="settings-label">
+                {showCompletedTasks ? <FiEye style={{ marginRight: '8px' }} /> : <FiEyeOff style={{ marginRight: '8px' }} />}
+                Tamamlanan Görevler
+              </label>
+              <div className="theme-selector">
+                <button
+                  className={`theme-btn ${showCompletedTasks ? 'active' : ''}`}
+                  onClick={() => setShowCompletedTasks(true)}
+                >
+                  <FiEye style={{ marginRight: '8px' }} />
+                  Göster
+                </button>
+                <button
+                  className={`theme-btn ${!showCompletedTasks ? 'active' : ''}`}
+                  onClick={() => setShowCompletedTasks(false)}
+                >
+                  <FiEyeOff style={{ marginRight: '8px' }} />
+                  Gizle
+                </button>
+              </div>
+            </div>
+            <div className="settings-field">
+              <label className="settings-label">
+                {emailNotificationsEnabled ? <FiBell style={{ marginRight: '8px' }} /> : <FiBellOff style={{ marginRight: '8px' }} />}
+                E-posta Bildirimleri
+              </label>
+              <div className="theme-selector">
+                <button
+                  className={`theme-btn ${emailNotificationsEnabled ? 'active' : ''}`}
+                  onClick={() => handleEmailNotificationsToggle(true)}
+                  disabled={loading}
+                >
+                  <FiBell style={{ marginRight: '8px' }} />
+                  Açık
+                </button>
+                <button
+                  className={`theme-btn ${!emailNotificationsEnabled ? 'active' : ''}`}
+                  onClick={() => handleEmailNotificationsToggle(false)}
+                  disabled={loading}
+                >
+                  <FiBellOff style={{ marginRight: '8px' }} />
+                  Kapalı
+                </button>
+              </div>
+              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px' }}>
+                E-posta bildirimleri açıkken, kayıt olduğunuzda hoş geldin e-postası ve hatırlatma tarihi geldiğinde bildirim e-postası alırsınız.
+              </p>
             </div>
           </div>
         </div>
