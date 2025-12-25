@@ -30,11 +30,11 @@ public class DailyTaskService : IDailyTaskService
         );
     }
 
-    public async Task<IEnumerable<DailyTaskDto>> GetDailyTasks(int userId)
+    public async Task<IEnumerable<DailyTaskDto>> GetDailyTasks(int userId, bool includePast = false)
     {
         return await _connection.QueryAsync<DailyTaskDto>(
             "todo.sp_GetDailyTasks",
-            new { UserId = userId },
+            new { UserId = userId, IncludePast = includePast ? 1 : 0 },
             commandType: System.Data.CommandType.StoredProcedure
         );
     }

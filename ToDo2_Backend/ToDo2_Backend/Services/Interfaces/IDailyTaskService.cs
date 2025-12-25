@@ -6,7 +6,7 @@ namespace ToDo2_Backend.Services.Interfaces
     {
         Task AddDailyTask(int taskId, DateTime date);
         Task RemoveDailyTask(int dailyTaskId);
-        Task<IEnumerable<DailyTaskDto>> GetDailyTasks(int userId);
+        Task<IEnumerable<DailyTaskDto>> GetDailyTasks(int userId, bool includePast = false);
     }
 
 }

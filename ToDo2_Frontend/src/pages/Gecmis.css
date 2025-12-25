@@ -84,6 +84,11 @@
   font-size: 14px;
   font-weight: 400;
   color: var(--text-primary);
+  text-decoration: none;
+  opacity: 1;
+}
+
+.history-task-item.completed .history-task-name {
   text-decoration: line-through;
   opacity: 0.6;
 }

@@ -6,7 +6,7 @@ namespace ToDo2_Backend.Services.Interfaces
     {
         Task AddWeeklyTask(int taskId, DateTime weekStart);
         Task RemoveWeeklyTask(int weeklyTaskId);
-        Task<IEnumerable<WeeklyTaskDto>> GetWeeklyTasks(int userId);
+        Task<IEnumerable<WeeklyTaskDto>> GetWeeklyTasks(int userId, bool includePast = false);
     }
 
 }

@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { useSearch } from "../context/SearchContext.jsx";
 import { FiSearch, FiLogOut, FiCalendar, FiStar, FiClock, FiFileText, FiCheckCircle, FiBookOpen, FiSettings, FiMenu, FiX, FiChevronLeft, FiChevronRight, FiArchive } from "react-icons/fi";
 import AddListModal from "../components/AddListModal";
+import reminderService from "../utils/reminderService";
 
 function TodoLayout() {
   const navigate = useNavigate();
@@ -30,7 +31,17 @@ function TodoLayout() {
   useEffect(() => {
     if (user) {
       fetchLists();
+      // Bildirim servisini başlat
+      reminderService.start();
+    } else {
+      // Kullanıcı çıkış yaptığında servisi durdur
+      reminderService.stop();
     }
+
+    // Cleanup: Component unmount olduğunda servisi durdur
+    return () => {
+      reminderService.stop();
+    };
   }, [user, fetchLists]);
 
   useEffect(() => {
@@ -51,6 +62,7 @@ function TodoLayout() {
   }, [isSidebarOpen]);
 
   const handleLogout = () => {
+    reminderService.stop(); // Çıkış yaparken servisi durdur
     localStorage.removeItem("token");
     setSearchTerm('');
     navigate("/login");
@@ -209,7 +221,7 @@ function TodoLayout() {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <FiArchive style={{ marginRight: '8px', fontSize: '16px' }} />
-            Geçmiş
+            Arşiv
           </NavLink>
           <NavLink 
             to="/not-defteri" 

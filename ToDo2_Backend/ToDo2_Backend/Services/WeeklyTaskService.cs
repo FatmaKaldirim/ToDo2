@@ -30,11 +30,11 @@ public class WeeklyTaskService : IWeeklyTaskService
         );
     }
 
-    public async Task<IEnumerable<WeeklyTaskDto>> GetWeeklyTasks(int userId)
+    public async Task<IEnumerable<WeeklyTaskDto>> GetWeeklyTasks(int userId, bool includePast = false)
     {
         return await _connection.QueryAsync<WeeklyTaskDto>(
             "todo.sp_GetWeeklyTasks",
-            new { UserId = userId },
+            new { UserId = userId, IncludePast = includePast ? 1 : 0 },
             commandType: System.Data.CommandType.StoredProcedure
         );
     }

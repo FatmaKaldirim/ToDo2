@@ -6,6 +6,7 @@
         public string TaskName { get; set; }
         public DateTime PlanDate { get; set; }
         public string PlanType { get; set; }
+        public int PlanID { get; set; }
     }
 
 }

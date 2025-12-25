@@ -7,7 +7,6 @@ using System.Text.Json.Serialization;
 using ToDo2_Backend.Repositories;
 using ToDo2_Backend.Repositories.Interfaces;
 using ToDo2_Backend.Services;
-using ToDo2_Backend.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

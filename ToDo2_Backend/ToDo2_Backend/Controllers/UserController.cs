@@ -104,6 +104,7 @@ namespace ToDo2_Backend.Controllers
 
         // =========================
         // GET USER INFO
+        // Uses: sp_GetUserInfo (60.sp_GetUserInfo.sql)
         // =========================
         [Authorize]
         [HttpGet("me")]
@@ -116,10 +117,9 @@ namespace ToDo2_Backend.Controllers
             }
 
             var user = await _connection.QueryFirstOrDefaultAsync<dynamic>(
-                @"SELECT UserID, UserName, UserMail 
-                  FROM Users 
-                  WHERE UserID = @UserID",
-                new { UserID = userId }
+                "sp_GetUserInfo",
+                new { UserID = userId },
+                commandType: CommandType.StoredProcedure
             );
 
             if (user == null)
@@ -139,8 +139,8 @@ namespace ToDo2_Backend.Controllers
         // UPDATE USER PROFILE
         // =========================
         [Authorize]
-        [HttpPut("update-profile")]
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileDto dto)
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
@@ -148,10 +148,10 @@ namespace ToDo2_Backend.Controllers
                 return Unauthorized();
             }
 
-            // Email kontrolü (başka bir kullanıcı tarafından kullanılıyor mu?)
+            // Email kontrolü - başka bir kullanıcı bu email'i kullanıyor mu?
             var existingUser = await _connection.QueryFirstOrDefaultAsync<dynamic>(
-                "SELECT UserID FROM Users WHERE UserMail = @Email AND UserID != @UserID",
-                new { Email = dto.Email, UserID = userId }
+                "SELECT UserID FROM Users WHERE UserMail = @UserMail AND UserID != @UserID",
+                new { UserMail = dto.UserMail, UserID = userId }
             );
 
             if (existingUser != null)
@@ -160,25 +160,23 @@ namespace ToDo2_Backend.Controllers
             }
 
             await _connection.ExecuteAsync(
-                @"UPDATE Users 
-                  SET UserName = @UserName, UserMail = @Email 
-                  WHERE UserID = @UserID",
-                new { UserID = userId, UserName = dto.Name, Email = dto.Email }
+                "UPDATE Users SET UserName = @UserName, UserMail = @UserMail WHERE UserID = @UserID",
+                new { UserName = dto.UserName, UserMail = dto.UserMail, UserID = userId }
             );
 
             return Ok(new
             {
-                message = "Profil güncellendi",
-                name = dto.Name,
-                email = dto.Email
+                message = "Profil başarıyla güncellendi"
             });
         }
 
         // =========================
         // DELETE USER ACCOUNT
+        // Uses: sp_DeleteUser (63.sp_DeleteUser.sql)
+        // Cascade delete ile tüm ilişkili veriler (Lists, Tasks, Steps, Notes, DailyTasks, WeeklyTasks, MonthlyTasks) otomatik silinir
         // =========================
         [Authorize]
-        [HttpDelete("delete-account")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> DeleteAccount()
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -187,13 +185,30 @@ namespace ToDo2_Backend.Controllers
                 return Unauthorized();
             }
 
-            // Kullanıcıyı sil (CASCADE ile ilgili tüm veriler silinecek)
-            await _connection.ExecuteAsync(
-                "DELETE FROM Users WHERE UserID = @UserID",
-                new { UserID = userId }
-            );
+            try
+            {
+                var result = await _connection.QueryFirstOrDefaultAsync<dynamic>(
+                    "sp_DeleteUser",
+                    new { UserID = userId },
+                    commandType: CommandType.StoredProcedure
+                );
 
-            return Ok(new { message = "Hesap silindi" });
+                if (result != null && result.Success == 1)
+                {
+                    return Ok(new
+                    {
+                        message = result.Message ?? "Hesap başarıyla silindi"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Kullanıcı silinirken bir hata oluştu." });
+                }
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         // =========================

@@ -19,9 +19,16 @@ public class WeeklyTasksController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> Get(int userId)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Remove(int id)
     {
-        return Ok(await _service.GetWeeklyTasks(userId));
+        await _service.RemoveWeeklyTask(id);
+        return Ok();
+    }
+
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> Get(int userId, [FromQuery] bool includePast = false)
+    {
+        return Ok(await _service.GetWeeklyTasks(userId, includePast));
     }
 }

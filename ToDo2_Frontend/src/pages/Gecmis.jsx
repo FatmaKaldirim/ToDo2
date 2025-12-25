@@ -14,6 +14,7 @@ export default function Gecmis() {
     setLoading(true);
     try {
       // Önceki günlerin görevlerini yükle
+      const now = new Date();
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
@@ -21,19 +22,67 @@ export default function Gecmis() {
       const tasksRes = await api.get("/Tasks/list");
       const allTasks = tasksRes.data || [];
       
-      // Önceki günlere ait tamamlanmış görevleri filtrele
+      // Önceki günlere ait görevleri filtrele (tamamlanmış veya tamamlanmamış, bugünden önce oluşturulmuş)
+      // ÖNEMLİ: Bir görevin arşive gitmesi için saatin 00:00'ı geçip o günün bitmiş olması gerekir
+      // Yani bugün oluşturulmuş görevler (saat kaç olursa olsun) arşive GİTMEZ
       const history = allTasks
         .filter(task => {
-          if (!task.isCompleted) return false;
-          const completedDate = task.completedDate ? new Date(task.completedDate) : null;
-          if (!completedDate) return false;
-          completedDate.setHours(0, 0, 0, 0);
-          return completedDate < today;
+          // Backend'den CreatedAt olarak geliyor, frontend'de createdAt olarak map ediliyor
+          const createdDate = task.createdAt ? new Date(task.createdAt) : (task.createdDate ? new Date(task.createdDate) : null);
+          if (createdDate) {
+            // Geçersiz tarih kontrolü
+            if (isNaN(createdDate.getTime())) {
+              return false;
+            }
+            createdDate.setHours(0, 0, 0, 0);
+            // Bugünden ÖNCE oluşturulmuş görevler (tamamlanmış veya tamamlanmamış) - hepsi geçmişe gider
+            // Bugün veya gelecekte oluşturulmuş görevler arşive GİTMEZ
+            return createdDate.getTime() < today.getTime();
+          }
+          // Eğer createdDate yoksa ve görev tamamlanmışsa, tamamlanma tarihine bak
+          if (task.isCompleted) {
+            const completedDate = task.completedAt ? new Date(task.completedAt) : (task.completedDate ? new Date(task.completedDate) : null);
+            if (completedDate) {
+              // Geçersiz tarih kontrolü
+              if (isNaN(completedDate.getTime())) {
+                return false;
+              }
+              completedDate.setHours(0, 0, 0, 0);
+              // Bugünden ÖNCE tamamlanmış görevler geçmişe gider
+              // Bugün veya gelecekte tamamlanmış görevler arşive GİTMEZ
+              return completedDate.getTime() < today.getTime();
+            }
+          }
+          return false;
         })
-        .map(task => ({
-          ...task,
-          date: task.completedDate ? new Date(task.completedDate) : new Date()
-        }))
+        .map(task => {
+          // Tarih olarak oluşturulma tarihini veya tamamlanma tarihini kullan
+          const createdDate = task.createdAt ? new Date(task.createdAt) : (task.createdDate ? new Date(task.createdDate) : null);
+          const completedDate = task.completedAt ? new Date(task.completedAt) : (task.completedDate ? new Date(task.completedDate) : null);
+          let date = createdDate || completedDate || new Date();
+          
+          // Eğer tamamlanmışsa ve tamamlanma tarihi varsa onu kullan
+          if (task.isCompleted && completedDate && !isNaN(completedDate.getTime())) {
+            date = completedDate;
+          } else if (createdDate && !isNaN(createdDate.getTime())) {
+            date = createdDate;
+          } else {
+            // Geçersiz tarih varsa bugünden önceki bir tarih kullan (gösterilmesin)
+            date = new Date(today);
+            date.setDate(date.getDate() - 1);
+          }
+          
+          return {
+            ...task,
+            date: date
+          };
+        })
+        .filter(task => {
+          // Son bir kontrol: Gelecek tarihli görevleri filtrele
+          const taskDate = new Date(task.date);
+          taskDate.setHours(0, 0, 0, 0);
+          return taskDate.getTime() < today.getTime();
+        })
         .sort((a, b) => b.date - a.date);
 
       // Tarihe göre grupla
@@ -89,7 +138,7 @@ export default function Gecmis() {
       <header className="page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <FiClock style={{ fontSize: '24px', color: '#7c3aed' }} />
-          <h1 className="page-title">Geçmiş</h1>
+          <h1 className="page-title">Arşiv</h1>
         </div>
       </header>
 
@@ -97,7 +146,7 @@ export default function Gecmis() {
         {historyItems.length === 0 ? (
           <div className="no-history-message">
             <FiClock style={{ fontSize: '48px', color: '#d1d5db', marginBottom: '16px' }} />
-            <p>Henüz geçmiş görev yok.</p>
+            <p>Henüz arşivlenmiş görev yok.</p>
           </div>
         ) : (
           <div className="history-timeline">
@@ -110,7 +159,7 @@ export default function Gecmis() {
                 </div>
                 <div className="history-tasks">
                   {group.tasks.map(task => (
-                    <div key={task.taskID} className="history-task-item">
+                    <div key={task.taskID} className={`history-task-item ${task.isCompleted ? 'completed' : ''}`}>
                       <div className="history-task-icon">
                         {task.isImportant ? (
                           <FiStar style={{ color: '#fbbf24' }} />
@@ -123,12 +172,36 @@ export default function Gecmis() {
                         {task.listName && (
                           <span className="history-task-list">{task.listName}</span>
                         )}
+                        {!task.isCompleted && (
+                          <span className="history-task-status" style={{ 
+                            fontSize: '11px', 
+                            color: '#ffb900',
+                            fontWeight: '500',
+                            marginTop: '2px'
+                          }}>
+                            Devam ediyor
+                          </span>
+                        )}
                       </div>
                       <div className="history-task-time">
-                        {new Date(task.completedDate).toLocaleTimeString('tr-TR', {
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
+                        {task.isCompleted && task.completedAt ? (
+                          new Date(task.completedAt).toLocaleTimeString('tr-TR', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
+                        ) : (
+                          task.createdAt ? (
+                            new Date(task.createdAt).toLocaleTimeString('tr-TR', {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })
+                          ) : (task.createdDate ? (
+                            new Date(task.createdDate).toLocaleTimeString('tr-TR', {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })
+                          ) : '')
+                        )}
                       </div>
                     </div>
                   ))}
@@ -141,4 +214,3 @@ export default function Gecmis() {
     </div>
   );
 }
-

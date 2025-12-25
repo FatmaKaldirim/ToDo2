@@ -11,7 +11,7 @@ BEGIN
         WHERE ListID = @ListID AND UserID = @UserID
     )
     BEGIN
-        RAISERROR('Liste bulunamadý veya kullanýcýya ait deðil.', 16, 1);
+        RAISERROR('Liste bulunamadï¿½ veya kullanï¿½cï¿½ya ait deï¿½il.', 16, 1);
         RETURN;
     END
 

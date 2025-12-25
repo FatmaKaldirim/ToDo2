@@ -26,13 +26,14 @@ public class MonthlyTaskService : IMonthlyTaskService
         );
     }
 
-    public async Task<IEnumerable<MonthlyTaskDto>> GetMonthlyTasks(int userId)
+    public async Task<IEnumerable<MonthlyTaskDto>> GetMonthlyTasks(int userId, bool includePast = false)
     {
         return await _connection.QueryAsync<MonthlyTaskDto>(
             "todo.sp_GetMonthlyTasks",
             new
             {
-                UserId = userId
+                UserId = userId,
+                IncludePast = includePast ? 1 : 0
             },
             commandType: CommandType.StoredProcedure
         );

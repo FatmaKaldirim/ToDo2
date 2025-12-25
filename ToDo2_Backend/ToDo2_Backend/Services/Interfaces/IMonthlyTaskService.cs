@@ -6,7 +6,7 @@ namespace ToDo2_Backend.Services.Interfaces
     {
         Task AddMonthlyTask(int taskId, DateTime monthDate);
         Task RemoveMonthlyTask(int monthlyTaskId);
-        Task<IEnumerable<MonthlyTaskDto>> GetMonthlyTasks(int userId);
+        Task<IEnumerable<MonthlyTaskDto>> GetMonthlyTasks(int userId, bool includePast = false);
     }
 }
 

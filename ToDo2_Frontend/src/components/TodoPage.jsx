@@ -1,11 +1,14 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import api from "../api/axios";
 import { useSearch } from "../context/SearchContext.jsx";
+import { useAuth } from "../utils/auth";
 import { FiStar, FiClock, FiCalendar, FiRepeat, FiFileText, FiTrash2, FiX } from "react-icons/fi";
 import "./TodoPage.css";
+import reminderService from "../utils/reminderService";
 
 export default function TodoPage({ title, pageType, listId }) {
   const { searchTerm } = useSearch();
+  const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [lists, setLists] = useState([]);
   const [newTask, setNewTask] = useState("");
@@ -97,13 +100,91 @@ export default function TodoPage({ title, pageType, listId }) {
     }
   }, []);
 
+  // Günlük sıfırlama ve tekrarlayan görevleri ekleme
+  const checkAndResetDailyTasks = useCallback(async () => {
+    if (!user?.id || pageType !== "gunum") return;
+    
+    const lastResetDate = localStorage.getItem('lastDailyReset');
+    const today = new Date().toDateString();
+    
+    if (lastResetDate !== today) {
+      try {
+        // Günlük tekrarlayan görevleri günüme ekle
+        const dailyTasksRes = await api.get(`/daily-tasks/${user.id}?includePast=false`);
+        const todayDate = new Date().toISOString().split('T')[0];
+        const todayDailyTasks = (dailyTasksRes.data || []).filter(dt => {
+          if (!dt || !dt.taskDate) return false;
+          const taskDate = new Date(dt.taskDate).toISOString().split('T')[0];
+          return taskDate === todayDate;
+        });
+
+        // Tüm görevleri al
+        const allTasksRes = await api.get("/Tasks/list");
+        const allTasks = allTasksRes.data || [];
+        const todayDateObj = new Date();
+        todayDateObj.setHours(0, 0, 0, 0);
+
+        // Her günlük tekrarlayan görev için bugünün görevini oluştur
+        for (const dailyTask of todayDailyTasks) {
+          try {
+            // Ana görevi bul
+            const mainTask = allTasks.find(t => t.taskID === dailyTask.taskID);
+            
+            if (mainTask && mainTask.recurrenceType === 'daily') {
+              // Bugün zaten bu görevden oluşturulmuş mu kontrol et
+              const existingTask = allTasks.find(t => {
+                if (t.taskID === mainTask.taskID) return false; // Ana görev değil
+                const createdDate = t.createdAt ? new Date(t.createdAt) : (t.createdDate ? new Date(t.createdDate) : null);
+                if (createdDate) {
+                  createdDate.setHours(0, 0, 0, 0);
+                  return createdDate.getTime() === todayDateObj.getTime() && 
+                         t.taskName === mainTask.taskName &&
+                         t.recurrenceType !== 'daily'; // Tekrarlayan olmayan görev
+                }
+                return false;
+              });
+              
+              if (!existingTask) {
+                // Yeni görev oluştur (günlük tekrar için)
+                await api.post("/Tasks/add", {
+                  taskName: mainTask.taskName,
+                  taskContent: mainTask.taskContent,
+                  dueDate: new Date().toISOString(),
+                  isImportant: mainTask.isImportant,
+                  recurrenceType: "none" // Yeni görev tekrarlayan değil
+                });
+              }
+            }
+          } catch (error) {
+            console.error("Failed to add daily recurring task:", error);
+          }
+        }
+
+        // Sıfırlama tarihini güncelle
+        localStorage.setItem('lastDailyReset', today);
+        
+        // Görevleri yeniden yükle
+        loadTasks();
+      } catch (error) {
+        console.error("Failed to reset daily tasks:", error);
+      }
+    }
+  }, [user?.id, pageType, loadTasks]);
+
   useEffect(() => {
     loadTasks();
     loadLists();
   }, [loadTasks, loadLists]);
 
+  // Günüm sayfası için günlük sıfırlama ve tekrarlayan görevleri ekleme
   useEffect(() => {
-    if (selectedTask) {
+    if (pageType === "gunum" && user?.id) {
+      checkAndResetDailyTasks();
+    }
+  }, [pageType, user?.id, checkAndResetDailyTasks]);
+
+  useEffect(() => {
+    if (selectedTask?.taskID) {
       loadSteps(selectedTask.taskID);
       loadNotes(selectedTask.taskID);
       // Eğer adım veya not varsa, ilgili bölümü otomatik aç
@@ -115,7 +196,7 @@ export default function TodoPage({ title, pageType, listId }) {
       setShowStepsSection(false);
       setShowNotesSection(false);
     }
-  }, [selectedTask, loadSteps, loadNotes]);
+  }, [selectedTask?.taskID, loadSteps, loadNotes]);
 
   // Adımlar veya notlar yüklendiğinde, varsa bölümleri aç (sadece ilk yüklemede)
   useEffect(() => {
@@ -138,15 +219,16 @@ export default function TodoPage({ title, pageType, listId }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes.length, selectedTask?.taskID]);
 
-  // Aktif görevler değiştiğinde adım sayılarını yükle
+  // Aktif görevler değiştiğinde adım sayılarını yükle (optimize edilmiş)
+  const activeTaskIds = useMemo(() => tasks.map(t => t.taskID), [tasks]);
+  
   useEffect(() => {
-    const taskIds = activeTasks.map(t => t.taskID);
-    taskIds.forEach(taskId => {
+    activeTaskIds.forEach(taskId => {
       if (taskSteps[taskId] === undefined) {
         loadStepsForTask(taskId);
       }
     });
-  }, [tasks.map(t => t.taskID).join(',')]);
+  }, [activeTaskIds, taskSteps, loadStepsForTask]);
 
   const addTask = async (e) => {
     e.preventDefault();
@@ -162,58 +244,116 @@ export default function TodoPage({ title, pageType, listId }) {
       }
     }
     
-    await api.post("/Tasks/add", { 
-      taskName: newTask, 
-      listID: listToAdd,
-      recurrenceType: "none"
-    });
-    setNewTask("");
-    loadTasks();
+    try {
+      await api.post("/Tasks/add", { 
+        taskName: newTask, 
+        listID: listToAdd,
+        recurrenceType: "none"
+      });
+      setNewTask("");
+      await loadTasks();
+    } catch (error) {
+      console.error("Failed to add task:", error);
+      alert("Görev eklenirken bir hata oluştu. Lütfen tekrar deneyin.");
+    }
   };
 
   const updateTask = async (task, updates = {}) => {
-    const updatedTask = { 
-      ...task, 
-      taskID: task.taskID,
-      ...updates
-    };
-    await api.put("/Tasks/update", updatedTask);
-    setTasks(prevTasks => prevTasks.map(t => t.taskID === task.taskID ? updatedTask : t));
-    if (selectedTask && selectedTask.taskID === task.taskID) {
-      setSelectedTask(updatedTask);
+    if (!task || !task.taskID) return;
+    try {
+      const updatedTask = { 
+        ...task, 
+        taskID: task.taskID,
+        ...updates
+      };
+      await api.put("/Tasks/update", updatedTask);
+      setTasks(prevTasks => prevTasks.map(t => t.taskID === task.taskID ? updatedTask : t));
+      if (selectedTask && selectedTask.taskID === task.taskID) {
+        setSelectedTask(updatedTask);
+      }
+      
+      // Eğer reminderDate değiştiyse, bildirim geçmişini temizle
+      if (updates.reminderDate !== undefined) {
+        reminderService.clearNotification(task.taskID);
+      }
+    } catch (error) {
+      console.error("Failed to update task:", error);
+      const errorMessage = error.response?.data?.message || "Görev güncellenirken bir hata oluştu.";
+      alert(errorMessage);
     }
   };
   
   const addStep = async (e) => {
-    if (e.key !== "Enter" || !newStepText.trim()) return;
+    if (e.key !== "Enter" || !newStepText.trim() || !selectedTask) return;
     e.preventDefault(); // Form submit'i engelle
+    e.stopPropagation(); // Event propagation'ı durdur
     try {
     await api.post('/Step/add', { taskID: selectedTask.taskID, stepText: newStepText });
     setNewStepText("");
-    loadSteps(selectedTask.taskID);
+      await loadSteps(selectedTask.taskID);
       // Adım eklendikten sonra bölümü açık tut
       setShowStepsSection(true);
     } catch (error) {
       console.error("Failed to add step:", error);
+      alert("Adım eklenirken bir hata oluştu.");
     }
   };
 
   const updateStep = async (step, updates = {}) => {
-    await api.put('/Step/update', { 
-      stepID: step.stepID, 
-      taskID: step.taskID,
-      stepText: updates.stepText !== undefined ? updates.stepText : step.stepText,
-      isCompleted: updates.isCompleted !== undefined ? updates.isCompleted : step.isCompleted
-    });
-    loadSteps(selectedTask.taskID);
+    try {
+      // isCompleted değeri belirtilmişse onu kullan, yoksa mevcut değerin tersini al
+      const newIsCompleted = updates.isCompleted !== undefined 
+        ? updates.isCompleted 
+        : !step.isCompleted;
+      
+      await api.put('/Step/update', { 
+        stepID: step.stepID, 
+        taskID: step.taskID,
+        stepText: updates.stepText !== undefined ? updates.stepText : step.stepText,
+        isCompleted: newIsCompleted
+      });
+      await loadSteps(selectedTask.taskID);
+      
+      // Eğer adım tamamlandıysa ve ayar açıksa, görevi kontrol et
+      if (newIsCompleted === true) {
+        const autoCompleteEnabled = localStorage.getItem('autoCompleteTaskWhenStepsDone') !== 'false';
+        if (autoCompleteEnabled && selectedTask) {
+          // Tüm adımları kontrol et
+          const updatedSteps = await api.get(`/Steps/task/${selectedTask.taskID}`);
+          const allStepsCompleted = updatedSteps.data.every(s => s.isCompleted === true);
+          const hasSteps = updatedSteps.data.length > 0;
+          
+          if (hasSteps && allStepsCompleted && !selectedTask.isCompleted) {
+            // Backend'de stored procedure'ü çağır
+            try {
+              await api.post(`/Tasks/recalculate-completion/${selectedTask.taskID}`);
+              // Görevleri yeniden yükle
+              await loadTasks();
+              // Seçili görevi güncelle - tüm görevlerden bul
+              const allTasksRes = await api.get("/Tasks/list");
+              const updatedTask = allTasksRes.data.find(t => t.taskID === selectedTask.taskID);
+              if (updatedTask) {
+                setSelectedTask(updatedTask);
+              }
+            } catch (error) {
+              console.error("Failed to auto-complete task:", error);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Failed to update step:", error);
+      alert("Adım güncellenirken bir hata oluştu.");
+    }
   };
 
   const deleteStep = async (stepId) => {
     try {
       await api.delete(`/Step/delete/${stepId}`);
-      loadSteps(selectedTask.taskID);
+      await loadSteps(selectedTask.taskID);
     } catch (error) {
       console.error("Failed to delete step:", error);
+      alert("Adım silinirken bir hata oluştu.");
     }
   };
 
@@ -236,28 +376,47 @@ export default function TodoPage({ title, pageType, listId }) {
   };
 
   const addNote = async () => {
-    if (!newNoteText.trim()) return;
+    if (!newNoteText.trim() || !selectedTask) return;
+    try {
     await api.post('/Notes/add', { taskID: selectedTask.taskID, noteText: newNoteText });
     setNewNoteText("");
-    loadNotes(selectedTask.taskID);
-    // Not eklendikten sonra bölümü açık tut
-    setShowNotesSection(true);
+      await loadNotes(selectedTask.taskID);
+      // Not eklendikten sonra bölümü açık tut
+      setShowNotesSection(true);
+    } catch (error) {
+      console.error("Failed to add note:", error);
+      alert("Not eklenirken bir hata oluştu.");
+    }
   };
 
   const deleteNote = async (noteId) => {
-    await api.delete(`/Notes/delete/${noteId}`);
-    loadNotes(selectedTask.taskID);
+    if (!selectedTask) return;
+    if (!window.confirm("Bu notu silmek istediğinize emin misiniz?")) {
+      return;
+    }
+    try {
+      await api.delete(`/Notes/delete/${noteId}`);
+      await loadNotes(selectedTask.taskID);
+    } catch (error) {
+      console.error("Failed to delete note:", error);
+      alert("Not silinirken bir hata oluştu.");
+    }
   };
 
   const updateNote = async (note) => {
-    await api.put('/Notes/update', { 
-      noteID: note.noteID, 
-      taskID: note.taskID,
-      noteText: editingNoteText 
-    });
-    setEditingNoteId(null);
-    setEditingNoteText("");
-    loadNotes(selectedTask.taskID);
+    try {
+      await api.put('/Notes/update', { 
+        noteID: note.noteID, 
+        taskID: note.taskID,
+        noteText: editingNoteText 
+      });
+      setEditingNoteId(null);
+      setEditingNoteText("");
+      await loadNotes(selectedTask.taskID);
+    } catch (error) {
+      console.error("Failed to update note:", error);
+      alert("Not güncellenirken bir hata oluştu.");
+    }
   };
 
   const startEditNote = (note) => {
@@ -282,14 +441,47 @@ export default function TodoPage({ title, pageType, listId }) {
 
     const updateStepInline = async (step, updates) => {
       try {
+        // isCompleted değeri belirtilmişse onu kullan, yoksa mevcut değerin tersini al
+        const newIsCompleted = updates.isCompleted !== undefined 
+          ? updates.isCompleted 
+          : !step.isCompleted;
+        
         await api.put("/Steps/update", {
           stepID: step.stepID,
           stepText: updates.stepText !== undefined ? updates.stepText : step.stepText,
-          isCompleted: updates.isCompleted !== undefined ? updates.isCompleted : step.isCompleted
+          isCompleted: newIsCompleted
         });
         onStepsChange();
+        
+        // Eğer adım tamamlandıysa ve ayar açıksa, görevi kontrol et
+        if (newIsCompleted === true) {
+          const autoCompleteEnabled = localStorage.getItem('autoCompleteTaskWhenStepsDone') !== 'false';
+          if (autoCompleteEnabled) {
+            // Adımları yeniden yükle ve kontrol et
+            const updatedStepsRes = await api.get(`/Steps/task/${taskId}`);
+            const updatedSteps = updatedStepsRes.data || [];
+            const allStepsCompleted = updatedSteps.length > 0 && updatedSteps.every(s => s.isCompleted === true);
+            
+            if (allStepsCompleted) {
+              // Görevi bul ve kontrol et
+              const taskRes = await api.get("/Tasks/list");
+              const task = taskRes.data.find(t => t.taskID === taskId);
+              if (task && !task.isCompleted) {
+                // Backend'de stored procedure'ü çağır
+                try {
+                  await api.post(`/Tasks/recalculate-completion/${taskId}`);
+                  // Görevleri yeniden yükle
+                  await loadTasks();
+                } catch (error) {
+                  console.error("Failed to auto-complete task:", error);
+                }
+              }
+            }
+          }
+        }
       } catch (error) {
         console.error("Failed to update step:", error);
+        alert("Adım güncellenirken bir hata oluştu.");
       }
     };
 
@@ -394,7 +586,7 @@ export default function TodoPage({ title, pageType, listId }) {
     );
   };
 
-  const getFilteredTasks = () => {
+  const { active: activeTasks, completed: completedTasks } = useMemo(() => {
     if (searchTerm) return { active: tasks.filter(t => !t.isCompleted), completed: tasks.filter(t => t.isCompleted) };
     if (listId) return { active: tasks.filter(t => !t.isCompleted), completed: tasks.filter(t => t.isCompleted) };
     
@@ -402,29 +594,54 @@ export default function TodoPage({ title, pageType, listId }) {
     today.setHours(0, 0, 0, 0);
     
     const active = tasks.filter(t => {
+      // ÖNEMLİ: Tamamlanmış görevler aktif listesinde gösterilmez
+      if (t.isCompleted) return false;
+      
       if (pageType === "gunum") {
-        // Günüm sayfasında sadece bugünün görevlerini göster
-        // Eğer görev bugünden önce oluşturulmuşsa ve tamamlanmamışsa göster
-        if (t.isCompleted) return false;
-        // Bugün oluşturulmuş veya bugün için planlanmış görevler
-        const createdDate = t.createdDate ? new Date(t.createdDate) : null;
+        // Günüm sayfasında sadece bugün oluşturulmuş TAMAMLANMAMIŞ görevleri göster
+        const createdDate = t.createdAt ? new Date(t.createdAt) : (t.createdDate ? new Date(t.createdDate) : null);
         if (createdDate) {
+          // Geçersiz tarih kontrolü
+          if (isNaN(createdDate.getTime())) {
+            return false;
+          }
           createdDate.setHours(0, 0, 0, 0);
-          // Bugün veya bugünden sonra oluşturulmuş görevler
-          return createdDate >= today;
+          // Sadece bugün oluşturulmuş görevler (bugünden önce oluşturulmuşlar geçmişe gider)
+          return createdDate.getTime() === today.getTime();
         }
-        return true; // Tarih bilgisi yoksa göster
+        // Tarih bilgisi yoksa bugün oluşturulmuş kabul et (varsayılan)
+        return true;
       }
-      if (pageType === "onemli") return t.isImportant && !t.isCompleted; // Sadece önemli ve tamamlanmamış
-      if (pageType === "planlanan") return t.dueDate && !t.isCompleted;
-      return !t.isCompleted;
+      if (pageType === "onemli") {
+        // Önemli sayfasında tüm önemli görevleri göster (günüm'den de dahil)
+        return t.isImportant;
+      }
+      if (pageType === "planlanan") return t.dueDate;
+      return true; // Diğer sayfalarda tüm tamamlanmamış görevler
     });
-    // Önemli sayfasında tamamlanan görevleri gösterme
-    const completed = pageType === "onemli" ? [] : tasks.filter(t => t.isCompleted);
+    // Tamamlanan görevler - Sadece gerçekten tamamlanmış görevleri göster
+    const completed = tasks.filter(t => {
+      // ÖNEMLİ: Sadece isCompleted === true olan görevler tamamlanan listesinde gösterilir
+      if (!t.isCompleted) return false;
+      
+      if (pageType === "onemli") return false; // Önemli sayfasında tamamlanan görevleri gösterme
+      if (pageType === "gunum") {
+        // Günüm sayfasında sadece bugün oluşturulmuş tamamlanan görevleri göster
+        const createdDate = t.createdAt ? new Date(t.createdAt) : (t.createdDate ? new Date(t.createdDate) : null);
+        if (createdDate) {
+          // Geçersiz tarih kontrolü
+          if (isNaN(createdDate.getTime())) {
+            return false;
+          }
+          createdDate.setHours(0, 0, 0, 0);
+          return createdDate.getTime() === today.getTime();
+        }
+        return true; // Tarih bilgisi yoksa bugün oluşturulmuş kabul et
+      }
+      return true; // Diğer sayfalarda tüm tamamlanmış görevler
+    });
     return { active, completed };
-  };
-
-  const { active: activeTasks, completed: completedTasks } = getFilteredTasks();
+  }, [tasks, searchTerm, listId, pageType]);
   const [showCompleted, setShowCompleted] = useState(() => {
     return localStorage.getItem('showCompletedTasks') !== 'false';
   });
@@ -434,7 +651,7 @@ export default function TodoPage({ title, pageType, listId }) {
     setShowCompleted(stored !== 'false');
   }, []);
 
-  if (loading) return <div className="loading-full-page">Loading...</div>;
+  if (loading) return <div className="loading-full-page">Yükleniyor...</div>;
 
   return (
     <div className="todo-layout">
@@ -454,20 +671,42 @@ export default function TodoPage({ title, pageType, listId }) {
               
               return (
                 <li key={task.taskID} className="task-item-wrapper">
-                  <div className="task-row" onClick={() => {
+                  <div className="task-row" onClick={(e) => {
+                    // Sadece task row'un kendisine tıklandığında aç (butonlara tıklanınca açılmasın)
+                    if (e.target.closest('.check-btn, .star-btn, .expand-steps-btn')) {
+                      return;
+                    }
+                    // Çift tıklama ile açılmasını sağla veya tek tıklama ile aç
                     setSelectedTask(task);
                     if (!taskSteps[task.taskID]) {
                       loadStepsForTask(task.taskID);
                     }
                   }}>
-                    <button className={`check-btn ${task.isCompleted ? "filled" : ""}`} onClick={(e) => { e.stopPropagation(); updateTask({ ...task, isCompleted: true }); }} />
-                    <span className="task-name">{task.taskName}</span>
+                    <button 
+                      className={`check-btn ${task.isCompleted ? "filled" : ""}`} 
+                      onClick={async (e) => { 
+                        e.stopPropagation(); 
+                        try {
+                          await updateTask({ ...task, isCompleted: !task.isCompleted }); 
+                        } catch (error) {
+                          console.error("Failed to update task:", error);
+                        }
+                      }} 
+                    />
+                    <span className="task-name" onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedTask(task);
+                      if (!taskSteps[task.taskID]) {
+                        loadStepsForTask(task.taskID);
+                      }
+                    }}>{task.taskName}</span>
                     <button 
                       className="expand-steps-btn"
-                      onClick={(e) => {
+                      onClick={async (e) => {
                         e.stopPropagation();
+                        try {
                         if (taskSteps[task.taskID] === undefined) {
-                          loadStepsForTask(task.taskID);
+                            await loadStepsForTask(task.taskID);
                         }
                         setExpandedTasks(prev => {
                           const newSet = new Set(prev);
@@ -478,12 +717,25 @@ export default function TodoPage({ title, pageType, listId }) {
                           }
                           return newSet;
                         });
+                        } catch (error) {
+                          console.error("Failed to load steps:", error);
+                        }
                       }}
                       title={isExpanded ? "Adımları gizle" : "Adımları göster"}
                     >
                       {isExpanded ? "▼" : "▶"} {taskStepsList.length > 0 ? taskStepsList.length : ""}
                     </button>
-                    <button className={`star-btn ${task.isImportant ? "important" : ""}`} onClick={(e) => { e.stopPropagation(); updateTask({ ...task, isImportant: !task.isImportant }); }}>
+                    <button 
+                      className={`star-btn ${task.isImportant ? "important" : ""}`} 
+                      onClick={async (e) => { 
+                        e.stopPropagation(); 
+                        try {
+                          await updateTask({ ...task, isImportant: !task.isImportant }); 
+                        } catch (error) {
+                          console.error("Failed to update task:", error);
+                        }
+                      }}
+                    >
                       {task.isImportant ? "★" : "☆"}
                     </button>
                   </div>
@@ -874,9 +1126,10 @@ export default function TodoPage({ title, pageType, listId }) {
                     try {
                       await api.delete(`/Tasks/delete/${selectedTask.taskID}`);
                       setSelectedTask(null);
-                      loadTasks();
+                      await loadTasks();
+                      alert("Görev başarıyla silindi.");
                     } catch (error) {
-                      console.error("Görev silinemedi:", error);
+                      console.error("Failed to delete task:", error);
                       alert("Görev silinirken bir hata oluştu.");
                     }
                   }

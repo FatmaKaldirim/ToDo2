@@ -27,9 +27,9 @@ public class DailyTasksController : ControllerBase
     }
 
     [HttpGet("{userId}")]
-    public async Task<IActionResult> Get(int userId)
+    public async Task<IActionResult> Get(int userId, [FromQuery] bool includePast = false)
     {
-        var result = await _service.GetDailyTasks(userId);
+        var result = await _service.GetDailyTasks(userId, includePast);
         return Ok(result);
     }
 }

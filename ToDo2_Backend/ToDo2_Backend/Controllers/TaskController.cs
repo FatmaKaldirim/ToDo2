@@ -200,5 +200,35 @@ namespace ToDoList_Odev_Backend.Controllers
 
             return Ok(new { message = "Task silindi" });
         }
+
+        // ==========================
+        // RECALCULATE TASK COMPLETION FROM STEPS
+        // Uses: todo.sp_RecalculateTaskCompletionFromSteps (20.todo.sp_RecalculateTaskCompletionFromSteps.sql)
+        // Automatically completes task if all steps are completed
+        // ==========================
+        [HttpPost("recalculate-completion/{taskId}")]
+        public async Task<IActionResult> RecalculateTaskCompletion(int taskId)
+        {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            try
+            {
+                await _connection.ExecuteAsync(
+                    "todo.sp_RecalculateTaskCompletionFromSteps",
+                    new
+                    {
+                        TaskID = taskId,
+                        UserID = userId
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return Ok(new { message = "Task completion recalculated" });
+            }
+            catch (SqlException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

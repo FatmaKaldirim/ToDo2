@@ -282,6 +282,46 @@
   background: var(--color-teal);
 }
 
+.calendar-task-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-task-item:hover {
+  opacity: 0.8;
+}
+
+.calendar-task-item.daily {
+  background: var(--color-blue);
+}
+
+.calendar-task-item.weekly {
+  background: var(--color-purple);
+}
+
+.calendar-task-item.monthly {
+  background: var(--color-teal);
+}
+
+.calendar-task-item .task-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
 .day-note-input {
   position: absolute;
   top: 100%;
@@ -585,6 +625,13 @@
   color: white;
   display: flex;
   align-items: center;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.weekly-task-item:hover {
+  opacity: 0.8;
 }
 
 .weekly-task-item.daily {
@@ -597,6 +644,13 @@
 
 .weekly-task-item.monthly {
   background: var(--color-teal);
+}
+
+.weekly-task-item .task-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
 }
 
 @media (max-width: 768px) {
@@ -785,10 +839,21 @@
   background: var(--color-green-light);
   border: 1px solid var(--color-green);
   border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.modal-note-item p {
-  margin: 0 0 8px 0;
+.modal-note-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-note-content p {
+  margin: 0;
   color: var(--color-green);
   font-size: 14px;
   line-height: 1.5;
@@ -799,8 +864,635 @@
   color: var(--text-secondary);
 }
 
+.modal-note-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.modal-note-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.modal-note-action-btn:hover {
+  background: var(--background-hover);
+}
+
+.modal-note-edit {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-note-edit-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--background-primary);
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-note-edit-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.1);
+}
+
+.modal-note-edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.modal-note-save-btn,
+.modal-note-cancel-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-note-save-btn {
+  background: var(--accent-primary);
+  color: white;
+}
+
+.modal-note-save-btn:hover {
+  background: var(--accent-primary-hover);
+}
+
+.modal-note-cancel-btn {
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.modal-note-cancel-btn:hover {
+  background: var(--background-hover);
+}
+
+/* Tekrarlayan Görevler Bölümü */
+.recurring-tasks-section {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--background-primary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.recurring-tasks-group {
+  margin-bottom: 16px;
+}
+
+.recurring-tasks-group:last-child {
+  margin-bottom: 0;
+}
+
+.recurring-tasks-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--background-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.recurring-tasks-header:hover {
+  background: var(--background-hover);
+}
+
+.recurring-tasks-header span:not(.task-count):not(.expand-icon) {
+  flex: 1;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.task-count {
+  margin-left: 8px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.expand-icon {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.recurring-tasks-list {
+  margin-top: 8px;
+  padding: 8px;
+  background: var(--background-primary);
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.recurring-task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  gap: 12px;
+}
+
+.recurring-task-item:last-child {
+  margin-bottom: 0;
+}
+
+.recurring-task-item:hover {
+  background: var(--background-hover);
+  border-color: var(--accent-primary);
+}
+
+.recurring-task-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.recurring-task-check {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--background-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.recurring-task-check:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary-light);
+}
+
+.recurring-task-check.completed {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+.recurring-task-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 12px;
+}
+
+.recurring-task-icon {
+  font-size: 20px;
+}
+
+.recurring-task-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.recurring-task-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.recurring-task-name.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.recurring-task-date {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.recurring-task-weeks,
+.recurring-task-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.week-badge,
+.month-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--accent-primary-light);
+  color: var(--accent-primary);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.recurring-task-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.recurring-task-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.recurring-task-btn:hover {
+  background: var(--accent-primary-light);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.recurring-task-btn.delete:hover {
+  background: var(--color-red-light);
+  border-color: var(--color-red);
+  color: var(--color-red);
+}
+
+.completed-check {
+  font-size: 20px;
+  color: var(--color-green);
+  font-weight: bold;
+}
+
+.no-recurring-tasks {
+  padding: 16px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
 .no-notes-in-modal {
   text-align: center;
   color: var(--text-secondary);
   padding: 40px 20px;
+}
+
+.add-note-day-btn {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 8px;
+  border: 1px dashed var(--border-color);
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.add-note-day-btn:hover {
+  background: var(--accent-primary-light);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Not Ekleme Modal */
+.note-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.note-modal-content {
+  background: var(--background-primary);
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.note-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.note-modal-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--background-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.note-modal-close:hover {
+  background: var(--background-hover);
+  color: var(--text-primary);
+}
+
+.note-modal-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 16px;
+}
+
+.note-modal-textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-primary-light);
+}
+
+.note-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.note-modal-btn {
+  padding: 10px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.note-modal-btn.cancel {
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+}
+
+.note-modal-btn.cancel:hover {
+  background: var(--background-hover);
+  color: var(--text-primary);
+}
+
+.note-modal-btn.save {
+  background: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+}
+
+.note-modal-btn.save:hover:not(:disabled) {
+  background: var(--accent-primary-hover);
+}
+
+.note-modal-btn.save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Haftalık Tekrarlayan Görevler Bölümü */
+.weekly-recurring-tasks-section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 2px solid var(--border-color);
+}
+
+.weekly-recurring-tasks-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.weekly-recurring-tasks-header:hover {
+  background: var(--background-hover);
+}
+
+.weekly-recurring-tasks-header span:not(.task-count):not(.expand-icon) {
+  flex: 1;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.weekly-recurring-tasks-header .task-count {
+  margin-right: 12px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.weekly-recurring-tasks-header .expand-icon {
+  font-size: 12px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.weekly-recurring-tasks-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weekly-recurring-task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  gap: 12px;
+}
+
+.weekly-recurring-task-item:hover {
+  background: var(--background-hover);
+  border-color: var(--accent-primary);
+}
+
+.weekly-recurring-task-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.weekly-recurring-task-check {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--background-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.weekly-recurring-task-check:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary-light);
+}
+
+.weekly-recurring-task-check.completed {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+.weekly-recurring-task-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 12px;
+}
+
+.weekly-recurring-task-icon {
+  font-size: 20px;
+}
+
+.weekly-recurring-task-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.weekly-recurring-task-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.weekly-recurring-task-name.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.weekly-recurring-task-week {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.weekly-recurring-task-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.weekly-recurring-task-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.weekly-recurring-task-btn:hover {
+  background: var(--accent-primary-light);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.weekly-recurring-task-btn.delete:hover {
+  background: var(--color-red-light);
+  border-color: var(--color-red);
+  color: var(--color-red);
+}
+
+.weekly-task-item.daily {
+  background: var(--color-blue-light);
+  border-left: 3px solid var(--color-blue);
 }

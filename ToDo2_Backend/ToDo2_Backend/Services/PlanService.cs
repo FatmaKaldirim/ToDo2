@@ -14,7 +14,15 @@ public class PlanService : IPlanService
     public async Task<IEnumerable<PlanDto>> GetPlansAsync(int userId)
     {
         return await _connection.QueryAsync<PlanDto>(
-            "SELECT * FROM todo.vw_AllPlans WHERE UserId = @UserId",
+            @"SELECT 
+                v.TaskID AS TaskId,
+                v.TaskName,
+                v.PlanDate,
+                v.PlanType,
+                v.PlanID
+            FROM todo.vw_AllPlans v
+            INNER JOIN todo.Tasks t ON v.TaskID = t.TaskID
+            WHERE t.UserID = @UserId",
             new { UserId = userId }
         );
     }

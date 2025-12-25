@@ -29,9 +29,9 @@ namespace ToDo2_Backend.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> Get(int userId)
+        public async Task<IActionResult> Get(int userId, [FromQuery] bool includePast = false)
         {
-            return Ok(await _service.GetMonthlyTasks(userId));
+            return Ok(await _service.GetMonthlyTasks(userId, includePast));
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 [ApiController]
 [Route("api/plans")]
+[Authorize]
 public class PlansController : ControllerBase
 {
     private readonly IPlanService _service;
@@ -11,9 +14,10 @@ public class PlansController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> GetPlans(int userId)
+    [HttpGet]
+    public async Task<IActionResult> GetPlans()
     {
+        int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         return Ok(await _service.GetPlansAsync(userId));
     }
 }

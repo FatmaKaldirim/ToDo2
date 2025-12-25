@@ -4,16 +4,21 @@
   width: 100vw;
   max-width: 100%;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: var(--background-primary);
+  background: linear-gradient(135deg, #f0f4f8 0%, #d6e4f0 50%, #e8f0f6 100%);
   overflow: hidden;
   position: relative;
+}
+
+[data-theme="dark"] .todo-root {
+  background: linear-gradient(135deg, #1a1a1a 0%, #252525 50%, #1f1f1f 100%);
 }
 
 /* Sidebar Styles - Microsoft To Do Style */
 .sidebar {
   width: 260px;
   min-width: 260px;
-  background: var(--background-secondary);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 250, 0.98) 100%);
+  backdrop-filter: blur(10px);
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -21,11 +26,13 @@
   position: relative;
   transition: width 0.2s ease, min-width 0.2s ease;
   overflow: hidden;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="dark"] .sidebar {
-  background: var(--background-secondary);
+  background: linear-gradient(180deg, rgba(30, 30, 30, 0.95) 0%, rgba(37, 36, 35, 0.98) 100%);
   border-right-color: var(--border-color);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar.closed {
@@ -74,7 +81,7 @@
   width: 36px;
   height: 36px;
   background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-purple) 100%);
-  border-radius: 6px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,8 +89,36 @@
   font-size: 18px;
   font-weight: 700;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.2);
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.logo-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(0, 120, 212, 0.4);
 }
 
 .sidebar.closed .logo-icon {
@@ -179,18 +214,51 @@
 }
 
 .avatar {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-purple) 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   color: white;
   flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: rotate(45deg);
+  transition: all 0.5s;
+}
+
+.avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 120, 212, 0.4);
+}
+
+.avatar:hover::before {
+  animation: avatarShine 1.5s infinite;
+}
+
+@keyframes avatarShine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
 }
 
 .name {
@@ -232,39 +300,56 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 14px;
-  border-radius: 0;
+  padding: 10px 14px;
+  border-radius: 8px;
   cursor: pointer;
   color: var(--text-primary);
   text-decoration: none;
   font-size: 14px;
   font-weight: 400;
-  transition: background-color 0.1s ease;
-  margin: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 2px 8px;
   position: relative;
   border: none;
   background: transparent;
+  overflow: hidden;
 }
 
-.nav:hover {
-  background: var(--background-hover);
-  color: var(--text-primary);
-}
-
-.nav.active {
-  background: var(--background-hover);
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.nav.active::before {
+.nav::before {
   content: '';
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 3px;
-  background: var(--accent-primary);
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-primary), var(--color-purple));
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.1;
+}
+
+.nav:hover {
+  background: var(--background-hover);
+  color: var(--text-primary);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.nav:hover::before {
+  width: 100%;
+  opacity: 0.15;
+}
+
+.nav.active {
+  background: linear-gradient(90deg, rgba(0, 120, 212, 0.1), rgba(135, 100, 184, 0.1));
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 120, 212, 0.15);
+}
+
+.nav.active::before {
+  width: 4px;
+  opacity: 1;
+  background: linear-gradient(180deg, var(--accent-primary), var(--color-purple));
 }
 
 /* Navigation Item Colors */
